@@ -1,0 +1,36 @@
+<!--
+  Generated template for the MinhasSolicitacoesPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+ 
+    <ion-navbar>
+      <ion-title>Notes</ion-title>
+      <ion-buttons end>
+          <button ion-button icon-only (click)="addNote()"><ion-icon name="add"></ion-icon></button>
+      </ion-buttons>
+    </ion-navbar>
+   
+  </ion-header>
+   
+  <ion-content>
+   
+      <ion-list>
+   
+          <ion-item-sliding *ngFor="let note of transportes">
+   
+                 <ion-item>
+                  {{note.Nome}}
+                  </ion-item>
+               
+                  <ion-item-options>
+                    <button danger (click)="removeItem(item)"> Delete</button>
+                  </ion-item-options>
+   
+          </ion-item-sliding>
+   
+      </ion-list>
+   
+  </ion-content>

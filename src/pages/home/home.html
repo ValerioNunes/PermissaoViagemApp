@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Solicitar Viagem 
+    </ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="onLogout()"><ion-icon name="add"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+    <ion-content class="login-content"  padding>
+      <div>
+        <div>
+
+          <ion-label><h1>Viajantes</h1></ion-label>
+
+              <ion-item>
+                  <ion-label>Matrícula</ion-label>
+                  <ion-input type="number" [(ngModel)]="Viajante" clearInput></ion-input>
+          
+                  <button ion-button large (click)="onAddviajante()" item-end>
+                  <ion-icon  name="person-add" item-start></ion-icon>
+                  </button> 
+             </ion-item>
+        </div>
+        <div>
+          <ion-list>
+                <ion-item-sliding *ngFor="let note of Viajantes">
+      
+                    <ion-item>
+                        <h2>{{note.Nome}}</h2>
+                        <h3>Matrícula: {{note.Id}}</h3>  
+                    </ion-item>
+        
+                    <ion-item-options>
+                        <button ion-button (click)="onRemoveItem(note)" >
+                            <ion-icon name="trash"></ion-icon>
+                        </button>
+                    </ion-item-options>
+        
+                </ion-item-sliding>
+          </ion-list>
+
+         </div>
+      <ion-list inset>
+        <form (ngSubmit)="onSubmit($event)" #registerForm="ngForm">
+          <ion-row>
+            <ion-col>
+
+              <ion-list inset>
+                <ion-item>
+                    <ion-label>Transporte</ion-label>
+                    <ion-select [(ngModel)]="SolicitacaoViagem.Transporte" name="Transporte">
+                      <ion-option [value]="item.Id" *ngFor="let item of Transportes" [selected]="item.Nome == 'CARRO'">{{item.Nome}}</ion-option>
+                    </ion-select>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label>Origem</ion-label>
+                    <ion-select [(ngModel)]="SolicitacaoViagem.Origem" name="Origem">
+                      <ion-option [value]="item.Id" *ngFor="let item of Locais" [selected]="item.Nome == 'CARRO'">{{item.Nome}}</ion-option>
+                    </ion-select>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label>Destino</ion-label>
+                    <ion-select [(ngModel)]="SolicitacaoViagem.Destino" name="Destino">
+                      <ion-option [value]="item.Id" *ngFor="let item of Locais" >{{item.Nome}}</ion-option>
+                    </ion-select>
+                </ion-item>
+
+                <ion-item>
+                    <ion-label>Aprovador</ion-label>
+                    <ion-select [(ngModel)]="SolicitacaoViagem.Aprovador" name="Aprovador">
+                      <ion-option [value]="item.Id" *ngFor="let item of Aprovador" >{{item.Nome}}</ion-option>
+                    </ion-select>
+                </ion-item>
+
+              </ion-list>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="signup-col">
+              <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Solicitar</button>
+            </ion-col>
+          </ion-row>
+        </form>
+
+
+        </ion-list>
+      </div>
+      
+    </ion-content>
+
