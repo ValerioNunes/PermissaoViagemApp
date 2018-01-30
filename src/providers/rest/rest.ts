@@ -42,6 +42,9 @@ export class RestProvider {
     });
   }
 
+  public getSolicitacao(){
+    
+  }
 
   getTransportes() {
     return new Promise(resolve => {
