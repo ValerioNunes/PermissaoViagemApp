@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams , Loading , LoadingController } from 'ionic-angular';
 import { RestProvider } from '../../providers/rest/rest';
+import { DadosEmpregadoPage } from '../dados-empregado/dados-empregado';
 
 
 
@@ -17,21 +18,49 @@ import { RestProvider } from '../../providers/rest/rest';
   templateUrl: 'minhas-solicitacoes.html',
 })
 export class MinhasSolicitacoesPage {
-  transportes: any;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public restProvider: RestProvider) {
-    this.getTransportes();
+
+  MinhasSolicitacoes: any = []; 
+  Solicitante: any;
+  loading: Loading;
+
+  constructor(public nav : NavController,
+              public navParams: NavParams,
+              public restProvider: RestProvider,
+              private loadingCtrl: LoadingController) {
+              this.Solicitante =  this.navParams.get("Solicitante");
+              
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MinhasSolicitacoesPage');
-  }
-
-
-  getTransportes() {
-    this.restProvider.getTransportes()
-    .then(data => {
-      this.transportes = data;
-      console.log(this.transportes);
+  ionViewWillEnter() {
+    this.getMinhasSolicitacoes();
+    
+    this.MinhasSolicitacoes.forEach(element => {
+      
     });
+  }
+
+  getMinhasSolicitacoes() {
+    this.showLoading();
+    this.restProvider.getMinhasSolicitacoes(this.Solicitante.Id)
+    .then(data => {
+            this.MinhasSolicitacoes = data;
+            this.loading.dismiss();
+    });
+  }
+
+  itemSelected(item){
+
+  }
+  
+  showLoading() {
+        this.loading = this.loadingCtrl.create({
+        content: 'Aguarde! Consultando Solicitações...',
+        dismissOnPageChange: true
+        });
+        this.loading.present();
+  }
+
+  alterarTelefone(event){
+    this.nav.push(DadosEmpregadoPage,this.navParams);
   }
 }

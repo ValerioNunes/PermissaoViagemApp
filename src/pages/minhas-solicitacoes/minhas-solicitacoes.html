@@ -7,30 +7,32 @@
 <ion-header>
  
     <ion-navbar>
-      <ion-title>Notes</ion-title>
+      <ion-title>Minha Conta</ion-title>
       <ion-buttons end>
-          <button ion-button icon-only (click)="addNote()"><ion-icon name="add"></ion-icon></button>
+          <button ion-button icon-only (click)="getMinhasSolicitacoes()"><ion-icon name="md-refresh"></ion-icon></button>
       </ion-buttons>
-    </ion-navbar>
-   
+    </ion-navbar> 
   </ion-header>
-   
   <ion-content>
-   
+    <ion-item>
       <ion-list>
-   
-          <ion-item-sliding *ngFor="let note of transportes">
-   
-                 <ion-item>
-                  {{note.Nome}}
-                  </ion-item>
-               
-                  <ion-item-options>
-                    <button danger (click)="removeItem(item)"> Delete</button>
-                  </ion-item-options>
-   
-          </ion-item-sliding>
-   
+        <ion-list-header>Meus Dados</ion-list-header>
+          <ion-item>{{ Solicitante.Nome }}</ion-item>
+          <ion-item>Matricula : {{ Solicitante.Id }}</ion-item>
+          <ion-item>Telefone  : {{ Solicitante.Telefone }}</ion-item>
+          <ion-item>Email     : {{ Solicitante.Email }}</ion-item>
+          <ion-item>Supervisão: {{ Solicitante.Supervisao }}</ion-item>
       </ion-list>
+    </ion-item>
+
+
+
+
+  <div>
+          <button ion-button block (click)="alterarTelefone($event)">
+              Alterar meu Telefone
+          </button>
+  </div>
+
    
   </ion-content>

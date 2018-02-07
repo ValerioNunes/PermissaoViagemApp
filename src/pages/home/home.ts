@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController,  Loading, IonicPage,LoadingController} from 'ionic-angular';
+import { NavController, NavParams, AlertController,  Loading,LoadingController} from 'ionic-angular';
 import { RestProvider } from '../../providers/rest/rest';
-import { LoginPage } from '../login/login';
-
+import { AlterarStatusPage } from '../alterar-status/alterar-status';
+import { DadosEmpregadoPage } from '../dados-empregado/dados-empregado';
 
 @Component({
   selector: 'page-home',
@@ -10,18 +10,16 @@ import { LoginPage } from '../login/login';
 })
 
 export class HomePage   {
+
+
+  loading: Loading;
+  MinhasSolicitacoes : any;
+  Solicitacao : any; 
+
+
   private Solicitante :  any;
   private Aprovador   :  any;
-  private Locais      :  any;
-  private Transportes :  any;
-  private Viajante    :  any;
-  private Viajantes   :  any = [];
-  loading: Loading;
-  
-
-
-  private SolicitacaoViagem = {Origem: null, Destino: null,Transporte :  null, Aprovador : null, Viajantes : null};
-
+  private Status      :  any;
 
   constructor( public nav: NavController ,
                public restProvider: RestProvider,
@@ -30,118 +28,98 @@ export class HomePage   {
                private loadingCtrl: LoadingController) {
 
               this.Solicitante =  this.navParams.get("Solicitante");
-              this.Aprovador   =  this.navParams.get("Aprovador");  
-              this.Locais      =  this.navParams.get("Local");
-              this.Transportes =  this.navParams.get("Transporte");
+              this.Aprovador   =  this.navParams.get("Aprovador"); 
+              this.Status      =  this.navParams.get("Status");
   }
 
-onSubmit(formData) {
-   
-        if(this.formValidacao()) {
-          console.log(formData.valid);
-    }
+  verificarTelefone(Empregado){
+        if(Empregado.Telefone == null){
+          this.nav.push(DadosEmpregadoPage,this.navParams);
+        }  
   }
 
-formValidacao(){
-      if(this.SolicitacaoViagem.Origem !== null){
-        if(this.SolicitacaoViagem.Destino !== null){
-          if(this.SolicitacaoViagem.Aprovador !== null){
-            if(this.Viajantes.length > 0 ){
-              if(this.SolicitacaoViagem.Transporte !== null ){
-                  return true;
-              }else{
-               
-                this.showError("Selecione Transporte")
-              }
-            }else{
-              this.showError("Adicione Viajante(s)")
-            }
-          }else{
-            this.showError("Selecione Aprovador")
-          }
-        }else{
-          this.showError("Selecione o Destino")
-        }
-      }else{
-        this.showError("Selecione a Origem")
-      }
-      return false;
-}
 
-
-
-onLogout(){ 
-     this.nav.setRoot(LoginPage); 
+  ionViewWillEnter() {
+    console.log(this.Solicitante.Telefone);
+    this.verificarTelefone(this.Solicitante);
+    this.getMinhasSolicitacoes();
   }
 
-SolicitarViagem(){
-  console.log(this.SolicitacaoViagem);
-}
 
-onAddviajante(){
-  this.showLoading()
-  console.log(this.Viajante);
-
-
-
-  if(this.Viajante !== undefined){
-        this.restProvider.getEmpregado(this.Viajante).then(allowed => {
-          if (allowed[0]) { 
-            this.Viajantes.push(allowed[1]);
-            this.Viajante = "";
-            this.loading.dismiss();
-          } else {
-            this. showError("Verificar Matrícula ou Conexão com Internet")
-            this.loading.dismiss();
-          }
-        }).catch(error => { console.log(error) });
-
-    }else{
-      this.showError("Digite a Matrícula do Viajante")
-      this.loading.dismiss();
-    }
-    
-}
-
-verificarMatriculainList(matricula){
-
-  this.Viajantes.array.forEach(element => {
-    if(element.Id == matricula){
-      return false;
-    }
+getMinhasSolicitacoes() {
+  this.showLoading();
+  this.restProvider.getMinhasSolicitacoes(this.Solicitante.Id)
+  .then(data => {
+    this.MinhasSolicitacoes = data;
+    this.loading.dismiss();
   });
-     return true;
 }
-
-
-
-showLoading() {
-  this.loading = this.loadingCtrl.create({
-    content: 'Aguarde! Verificando Matricula...',
-    dismissOnPageChange: true
-  });
-  this.loading.present();
-}
-
-
-onRemoveItem(item){
-
-      let index = this.Viajantes.indexOf(item);
-      if(index > -1){
-          this.Viajantes.splice(index, 1);
-      }
-
-  }
-
-showError(text) {
+  
+ showError(text) {
     let alert = this.alertCtrl.create({
-      title: 'Ops...',
+      title: 'Atenção...',
       subTitle: text,
       buttons: ['OK']
     });
     alert.present();
-   
   }
 
+   showLoading() {
+
+    this.loading = this.loadingCtrl.create({
+    content: 'Aguarde! Consultando Solicitações...',
+    dismissOnPageChange: true
+    });
+    this.loading.present();
+  }
+
+  buscarSolicitacaoAlterarStatus(Id, status){ 
+    this.showLoading();
+    this.restProvider.getSolicitacao(Id)
+    .then(data => {
+      this.loading.dismiss();
+      this.nav.push(AlterarStatusPage,{Dados : data, Status : status });
+    
+    });
+  }
+
+  tipoUser(item){
+    return (item.Aprovador == this.Solicitante.Nome)
+  }
+
+  userAprovador(item){
+
+    if(item.Status == 'aguardando'){
+      this.buscarSolicitacaoAlterarStatus(item.Id, [this.Status[1],this.Status[2]]);
+    } else {
+      this.buscarSolicitacaoAlterarStatus(item.Id, []);
+    }
+  }
+
+  userSolicitante(item){
+       //this.msg.SendSMS();
+
+        if (item.Status == "aprovado" || item.Status == "nao_aprovado" ){
+          this.buscarSolicitacaoAlterarStatus(item.Id, [this.Status[3]]);
+        }else if (item.Status == "encerrado") {
+          this.buscarSolicitacaoAlterarStatus(item.Id, []);
+        }else{
+
+        }
+  }
+
+  itemSelected(item){
+    
+    if(this.tipoUser(item)){
+     
+      
+      this.userAprovador(item)
+
+    }else{
+
+      this.userSolicitante(item)
+
+    }
+  }
 }
 

@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 
@@ -14,27 +15,26 @@ import 'rxjs/add/operator/map';
 export class RestProvider {
   currentUser: any;
 
-  apiUrl = 'http://localhost:49425/api';
-  
+  apiUrl = 'http://192.168.13.18/solicitacaoviagem/api';
   constructor(public http: HttpClient) {
     console.log('Hello RestProvider Provider');
 
   }
   getStatus() {
     return new Promise(resolve => {
-      this.http.get(this.apiUrl+'/status').subscribe(data => {
-        resolve(data);        
+      this.http.get(this.apiUrl + '/status').subscribe(data => {
+        resolve(data);
       }, err => {
         console.log(err);
       });
     });
   }
 
- public  getEmpregado(matricula) {
+  getEmpregado(matricula) {
     return new Promise(resolve => {
-      this.http.get(this.apiUrl+'/empregadoes/'+matricula).subscribe(data => {
-        console.log(data); 
-        resolve([true, data]);   
+      this.http.get(this.apiUrl + '/empregadoes/' + matricula).subscribe(data => {
+        console.log(data);
+        resolve([true, data]);
       }, err => {
         console.log(err);
         resolve([false, err]);
@@ -42,22 +42,19 @@ export class RestProvider {
     });
   }
 
-  public getSolicitacao(){
-    
-  }
-
   getTransportes() {
     return new Promise(resolve => {
-      this.http.get(this.apiUrl+'/transportes').subscribe(data => {
+      this.http.get(this.apiUrl + '/DadosParaSolicitacaoViagemAPI').subscribe(data => {
         resolve(data);
       }, err => {
         console.log(err);
       });
     });
   }
-public getDadosSolicitarViagem(Matricula) {
+
+  getDadosSolicitarViagem(Matricula) {
     return new Promise(resolve => {
-      this.http.get(this.apiUrl+'/DadosSolicitarViagemAPI/'+ Matricula.matricula).subscribe(data => {
+      this.http.get(this.apiUrl + '/DadosSolicitarViagemAPI/' + Matricula.matricula).subscribe(data => {
         console.log(data);
         resolve(data);
       }, err => {
@@ -67,9 +64,55 @@ public getDadosSolicitarViagem(Matricula) {
     });
   }
 
-  addUser(data) {
+
+  getMinhasSolicitacoes(Matricula) {
+    return new Promise(resolve => {
+      this.http.get(this.apiUrl + '/MinhasSolicitacoes/' + Matricula).subscribe(data => {
+        console.log(data);
+        resolve(data);
+      }, err => {
+        console.log(err);
+        resolve(false);
+      });
+    });
+  }
+
+  getSolicitacao(Matricula) {
+    return new Promise(resolve => {
+      this.http.get(this.apiUrl + '/DadosParaSolicitacaoViagemAPI/' + Matricula,
+        {
+          headers: new HttpHeaders().set('Accept', 'application/json')
+        }).subscribe(data => {
+          resolve(data);
+        }, err => {
+          console.log(err);
+          resolve(false);
+        });
+    });
+  }
+
+  getContadosDaSolicitacao(SV) {
+    return new Promise(resolve => {
+      this.http.get(this.apiUrl + '/Contatoes/' + SV,
+        {
+          headers: new HttpHeaders().set('Accept', 'application/json')
+        }).subscribe(data => {
+          resolve(data);
+        }, err => {
+          console.log(err);
+          resolve(false);
+        });
+    });
+  }
+
+
+  addDadosParaSolicitacao(data) {
+
     return new Promise((resolve, reject) => {
-      this.http.post(this.apiUrl+'/users', JSON.stringify(data))
+      this.http.post(this.apiUrl + '/DadosParaSolicitacaoViagemAPI',
+        JSON.stringify(data), {
+          headers: new HttpHeaders().set('Content-Type', 'application/json')
+        })
         .subscribe(res => {
           resolve(res);
         }, (err) => {
@@ -78,8 +121,33 @@ public getDadosSolicitarViagem(Matricula) {
     });
   }
 
-  public  solicitanteUser(): any{
-      return this.currentUser;
+  setStatusSolicitacao(data) {
+    return new Promise((resolve, reject) => {
+      this.http.post(this.apiUrl + '/AlterarStatusSolicitacaoViagem',
+        JSON.stringify(data), {
+          headers: new HttpHeaders().set('Content-Type', 'application/json')
+        })
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
   }
-  
+
+  setEmpregado(data) {
+   
+    return new Promise((resolve, reject) => {
+      this.http.put((this.apiUrl + '/Empregadoes/' + data.Id),
+        JSON.stringify(data), {
+          headers: new HttpHeaders().set('Content-Type', 'application/json')
+        })
+        .subscribe(res => {
+          resolve(res);
+        }, (err) => {
+          reject(err);
+        });
+    });
+  }
+
 }

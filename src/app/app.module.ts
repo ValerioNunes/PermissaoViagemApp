@@ -4,14 +4,26 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
+//ionic cordova plugin rm cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="AIzaSyClD7IN8rDdCR0kR1KId6azmoZXAF8lOPw" --variable API_KEY_FOR_IOS="AIzaSyClD7IN8rDdCR0kR1KId6azmoZXAF8lOPw"
+
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import {MinhasSolicitacoesPage} from '../pages/minhas-solicitacoes/minhas-solicitacoes'
 import { LoginPage } from '../pages/login/login';
 import { TabsPage } from '../pages/tabs/tabs';
-
+import {SolicitarviagemPage} from'../pages/solicitarviagem/solicitarviagem';
+import { AlterarStatusPage } from '../pages/alterar-status/alterar-status';
+import {DadosEmpregadoPage} from '../pages/dados-empregado/dados-empregado';
+import { ContatosPage } from '../pages/contatos/contatos';
+import { BrMaskerModule } from 'brmasker-ionic-3';
 import { HttpClientModule } from '@angular/common/http';
 import { RestProvider } from '../providers/rest/rest';
+import { MensagemProvider }  from '../providers/msg/mensagem';
+import { EmailComposer } from '@ionic-native/email-composer';
+import { SMS } from '@ionic-native/sms';
+import { CallNumber } from '@ionic-native/call-number';
+
+
 
 @NgModule({
   declarations: [
@@ -19,12 +31,18 @@ import { RestProvider } from '../providers/rest/rest';
     HomePage,
     MinhasSolicitacoesPage,
     LoginPage,
-    TabsPage
+    TabsPage,
+    SolicitarviagemPage,
+    AlterarStatusPage,
+    DadosEmpregadoPage,
+    ContatosPage
+   
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    IonicModule.forRoot(MyApp)
+    BrMaskerModule,
+    IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -32,14 +50,23 @@ import { RestProvider } from '../providers/rest/rest';
     HomePage,
     MinhasSolicitacoesPage,
     LoginPage,
-    TabsPage
+    SolicitarviagemPage,
+    AlterarStatusPage,
+    TabsPage,
+    DadosEmpregadoPage,
+    ContatosPage,
+    
   ],
   
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    RestProvider
+    RestProvider,
+    EmailComposer,
+    SMS,
+    MensagemProvider,
+    CallNumber,
   ]
 })
 export class AppModule {}
