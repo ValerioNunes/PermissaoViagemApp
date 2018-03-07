@@ -1,14 +1,14 @@
 .ios, .md {
-    page-solicitarviagem {
+    page-maps {   
         .scroll {
             height: 100%
         }
-    
+
         #map {
             width: 100%;
             height: 60%;
         }
-    
+
         .directionsCard {
             max-height: 200px;
             overflow: scroll;
@@ -34,7 +34,22 @@
           .pac-container {
             font-family: Roboto;
           }
+
+          .origem {
+            background-color: #fff;
+            font-family: Roboto;
+            font-size: 15px;
+            font-weight: 300;
+            margin-left: 12px;
+            padding: 0 11px 0 13px;
+            text-overflow: ellipsis;
+            width: 300px;
+          }
     
+          #origem:focus {
+            border-color: #4d90fe;
+          }
+
           #type-selector {
             color: #fff;
             background-color: #4d90fe;
@@ -49,6 +64,5 @@
           #target {
             width: 345px;
           }         
-      }
     }
-
+}

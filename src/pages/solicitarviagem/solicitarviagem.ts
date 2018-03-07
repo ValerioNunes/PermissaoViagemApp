@@ -1,14 +1,18 @@
 
-import { Component } from "@angular/core/";
+import { Component, ViewChild, ElementRef  } from "@angular/core/";
 import { IonicPage, NavController, AlertController, NavParams , Loading, LoadingController } from 'ionic-angular';
 import { RestProvider } from '../../providers/rest/rest';
 import { MensagemProvider } from '../../providers/msg/mensagem';
+import { BrMaskerModule } from 'brmasker-ionic-3';
+import moment from 'moment';
 /**
  * Generated class for the SolicitarviagemPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
+
+
 
 @IonicPage()
 @Component({
@@ -18,8 +22,8 @@ import { MensagemProvider } from '../../providers/msg/mensagem';
 
 export class SolicitarviagemPage {
 
-  private Aprovador   :  any;
-  private Locais      :  any;
+  private Place: any;
+  private Aprovador   :  any = [];
   private Transportes :  any;
 
   private Viajante    :  any;
@@ -28,13 +32,12 @@ export class SolicitarviagemPage {
   private Telefone    :  any;
   private Telefones   :  any = [];
 
+  loading: Loading;
+
+  today = moment().format();
   SolicitacaoViagem  = this.FormatSolicitacao();
 
-  loading: Loading;
-       
-
-
-  constructor(  public nav: NavController ,
+  constructor(  public navCtrl: NavController,
                 public restProvider: RestProvider,
                 public navParams: NavParams,
                 public alertCtrl: AlertController,
@@ -42,44 +45,50 @@ export class SolicitarviagemPage {
                 public msg         : MensagemProvider) {
 
                   this.Aprovador   =  this.navParams.get("Aprovador");  
-                  this.Locais      =  this.navParams.get("Local");
                   this.Transportes =  this.navParams.get("Transporte");
+                  this.Place       =  this.navParams.get("Places");
   }
 
-
+  ionViewDidLoad() {
+   }
+ 
   onSubmit(formData) {
-     
-
       if(this.formValidacao()) {
         this.showLoading();
-
+        console.log(this.SolicitacaoViagem);
         this.restProvider.addDadosParaSolicitacao(this.SolicitacaoViagem).then(allowed => {
             console.log(allowed);
 
             if(allowed == 'Sua solicitação foi cadastrada com sucesso!'){
-               this.SolicitacaoViagem = this.FormatSolicitacao();
-
-               this.showError("Solicitação relizada com SUCESSO!")
-               this.enviarMensagem(this.Aprovador);
               
+                this.enviarMensagemSMS();    
+                this.SolicitacaoViagem = this.FormatSolicitacao();
+                this.showError("Solicitação relizada com SUCESSO!");
+                this.navCtrl.pop();
             }else{
-              this.showError("NÃO foi possível realizar Solicitação!")
+              this.showError("NÃO foi possível realizar Solicitação!");
             }
            
             this.loading.dismiss();
         }).catch(error => { console.log(error) });
 
     }
-  }
+   }
 
-  enviarMensagem(Aprovador){
+  enviarMensagemSMS(){
+    let idAprovador = this.SolicitacaoViagem.Aprovador;
+    var element = this.Aprovador.filter(function(elem, i, Aprovador){
+       return (elem.Id === idAprovador);
+    })[0];
 
-    let Mensagem = { Telefone : "98987542419",
-                     Texto    : "Permissão Viagem - Solicitação AGUARDADO Analise" 
-                    };
-    this.msg.SendSMS(Mensagem);
+    if(element.Telefone != null){
+        let Mensagem = { Telefone : element.Telefone,
+                        Texto     : "Permissão Viagem - +1 Solicitação AGUARDADO Análise" 
+                        };
+        //this.msg.SendSMS(Mensagem);
+                  }
 
-  }
+    }
 
 
 
@@ -93,7 +102,9 @@ export class SolicitarviagemPage {
                 if(this.SolicitacaoViagem.Chegada !== '' ){
                   if(this.Telefones.length > 0 ){
                         this.Viajantes.forEach(viajante =>  this.SolicitacaoViagem.Viajantes.push(viajante.Id) );
-                        this.SolicitacaoViagem.Contatos =  this.Telefones;
+                        this.SolicitacaoViagem.Contatos = this.Telefones;
+                        this.SolicitacaoViagem.Partida  = this.SolicitacaoViagem.Partida.toString().replace("Z","");
+                        this.SolicitacaoViagem.Chegada  = this.SolicitacaoViagem.Partida.toString().replace("Z","");
                         this.Viajantes = []; 
                         this.Telefones = [];
                         return true;
@@ -124,7 +135,7 @@ export class SolicitarviagemPage {
       this.showError("Selecione a Origem")
     }
     return false;
-}
+    }
 
 
   onAddviajante(){
@@ -154,7 +165,7 @@ export class SolicitarviagemPage {
       this.loading.dismiss();
     }
 
-}
+    }
 
   onAddTelefone(){
     console.log(this.Telefone);
@@ -169,7 +180,7 @@ export class SolicitarviagemPage {
       this.showError("Digite o Telefone")
     }
     this.Telefone = "";
-  }
+    }
 
   onRemoveTelefone(item){
 
@@ -205,7 +216,7 @@ export class SolicitarviagemPage {
     }
     });
    return flag;
-  }
+    }
 
   showLoading() {
 
@@ -215,40 +226,40 @@ export class SolicitarviagemPage {
     });
     this.loading.present();
 
-  }
+     }
 
-onRemoveItem(item){
+  
+  onRemoveItem(item){
 
-  let index = this.Viajantes.indexOf(item);
-  if(index > -1){
-      this.Viajantes.splice(index, 1);
-  }
+    let index = this.Viajantes.indexOf(item);
+    if(index > -1){
+        this.Viajantes.splice(index, 1);
+          }
 
-}
+    }
 
-showError(text) {
-  let alert = this.alertCtrl.create({
-    title: 'Atenção...',
-    subTitle: text,
-    buttons: ['OK']
-  });
-  alert.present();
+  showError(text) {
+      let alert = this.alertCtrl.create({
+        title: 'Atenção...',
+        subTitle: text,
+        buttons: ['OK']
+      });
+      alert.present();
 
-}
+    }
+  private FormatSolicitacao (){
+        return  { Origem     : this.navParams.get("Places").origem,
+                  Destino    : this.navParams.get("Places").destino,
+                  IdOrigemPlace:  this.navParams.get("Places").idorigemplace,
+                  IdDestinoPlace: this.navParams.get("Places").iddestinoplace,
+                  Transporte : '',
+                  Aprovador  : '',
+                  Solicitante: this.navParams.get("Solicitante").Id,
+                  Partida    : this.today,
+                  Chegada    : this.today,
+                  Contatos   : [],
+                  Viajantes  : []}
+        }
 
-
-private FormatSolicitacao (){
-
-  return  { Origem     : '',
-            Destino    : '',
-            Transporte : '',
-            Aprovador  : '',
-            Solicitante: this.navParams.get("Solicitante").Id,
-            Partida    : '',
-            Chegada    : '',
-            Contatos   : [],
-            Viajantes  : []}
-  }
-
- }
+    }
 

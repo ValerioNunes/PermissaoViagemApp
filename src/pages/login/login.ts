@@ -17,27 +17,25 @@ import { TabsPage } from '../tabs/tabs';
 })
 export class LoginPage {
   loading: Loading;
-  
-  registerCredentials = { matricula: ''};
-  constructor(private nav: NavController,  private alertCtrl: AlertController, public restProvider: RestProvider, private loadingCtrl: LoadingController) { }
- 
+
+  registerCredentials = { matricula: '' };
+  constructor(private nav: NavController, private alertCtrl: AlertController, public restProvider: RestProvider, private loadingCtrl: LoadingController) { }
+
   public createAccount() {
     this.nav.push('RegisterPage');
   }
- 
+
   public login() {
     this.showLoading()
     this.restProvider.getDadosSolicitarViagem(this.registerCredentials).then(allowed => {
-      if (allowed !== false) { 
-          this.nav.setRoot(TabsPage,allowed);
+      if (allowed !== false) {
+        this.nav.setRoot(TabsPage, allowed);
       } else {
-        this. showError("Matricula Inválida!")
+        this.showError("Matricula Inválida!")
       }
     }).catch(error => { console.log(error) });
   }
 
-
-  
   showLoading() {
     this.loading = this.loadingCtrl.create({
       content: 'Aguarde! Verificando Matricula...',
@@ -45,7 +43,6 @@ export class LoginPage {
     });
     this.loading.present();
   }
-
 
   showError(text) {
     let alert = this.alertCtrl.create({

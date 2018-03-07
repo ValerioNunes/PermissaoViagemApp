@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
@@ -16,7 +16,8 @@ export class RestProvider {
   currentUser: any;
 
   apiUrl = 'http://192.168.13.18/solicitacaoviagem/api';
-  constructor(public http: HttpClient) {
+  placeUrl = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=BuscaID&key=AIzaSyA_BxomwSlI5BuebULTjOtNvnXJv7qHILY';
+  constructor(public http: HttpClient ) {
     console.log('Hello RestProvider Provider');
 
   }
@@ -64,7 +65,6 @@ export class RestProvider {
     });
   }
 
-
   getMinhasSolicitacoes(Matricula) {
     return new Promise(resolve => {
       this.http.get(this.apiUrl + '/MinhasSolicitacoes/' + Matricula).subscribe(data => {
@@ -74,6 +74,22 @@ export class RestProvider {
         console.log(err);
         resolve(false);
       });
+    });
+  }
+
+  getPlace(id) {
+    let link = this.placeUrl.replace('BuscaID',id);
+
+    return new Promise(response => {
+      this.http.get(link,
+        {
+          headers: new HttpHeaders().set('Content-Type', 'application/json')
+        }).subscribe(data => {
+          response(data);
+        }, err => {
+          console.log(err);
+          response(false);
+        });
     });
   }
 
@@ -105,7 +121,6 @@ export class RestProvider {
     });
   }
 
-
   addDadosParaSolicitacao(data) {
 
     return new Promise((resolve, reject) => {
@@ -136,7 +151,7 @@ export class RestProvider {
   }
 
   setEmpregado(data) {
-   
+
     return new Promise((resolve, reject) => {
       this.http.put((this.apiUrl + '/Empregadoes/' + data.Id),
         JSON.stringify(data), {

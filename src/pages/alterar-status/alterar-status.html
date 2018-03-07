@@ -12,65 +12,75 @@
 
 </ion-header>
 
-
-<ion-content padding>
-  <ion-list *ngFor="let item of Solicitacao">
-      
-      <ion-list-header>Origem</ion-list-header>
-        <ion-item>{{ item.Origem.Nome }}</ion-item>
-
-      <ion-list-header>Destino</ion-list-header>
-        <ion-item>{{ item.Destino.Nome }}</ion-item>
-
-      <ion-list-header>Transporte</ion-list-header>
-        <ion-item>{{ item.Transporte.Nome }}</ion-item>
-
-      <ion-list-header>Data</ion-list-header>
-        <ion-item><p>Partida  :{{ item.DataPartida | date:' dd/MM/yyyy - hh:mm'}}</p></ion-item>
-        <ion-item><p>Chegada :{{ item.DataChegadaPrevista | date:' dd/MM/yyyy - hh:mm' }}</p></ion-item>
+  <ion-content padding>  
         
-      <ion-list-header>Solicitante</ion-list-header>
-        <ion-item><p>{{ item.Empregado.Nome }}</p></ion-item>
-      
-      <ion-list-header>Histórico Status </ion-list-header>
-      <ion-item *ngFor="let status of item.AprovadorSolicitacaoId"> 
-        <p>{{ status.Status.Nome }} </p>
-        <div item-right><p>{{ status.DataStatus | date:' dd/MM/yyyy - hh:mm'}}</p></div>
+   <div #map id="map"></div>
+
+   <div>
+    <ion-list-header>Dados de Trajeto</ion-list-header>   
+      <ion-item>
+        <div  id="distancia"></div>
+        <div  id="duracao"></div>
       </ion-item>
 
-      <ion-list-header>Viajantes</ion-list-header>
-        <ion-item *ngFor="let viajante of item.ViajanteSolicitacaoId"><p>{{ viajante.Empregado.Nome }}</p></ion-item>
-      </ion-list>
+    <ion-list *ngFor="let item of Solicitacao">
+        
+        <ion-list-header>Origem</ion-list-header>
+          <ion-item><div item-right>{{ item.Origem.Nome }}</div></ion-item>
 
-      <div>
-          <button ion-button block (click)="contato($event)">
-              Contatos
-          </button>
-      </div>
+        <ion-list-header>Destino</ion-list-header>
+          <ion-item><div item-right>{{ item.Destino.Nome }}</div></ion-item>
 
+        <ion-list-header>Transporte</ion-list-header>
+          <ion-item><div item-right>{{ item.Transporte.Nome }}</div></ion-item>
+
+        <ion-list-header>Data</ion-list-header>
+          <ion-item><div item-right><p>Partida  :{{ item.DataPartida | date:' dd/MM/yyyy - HH:mm'}}</p></div></ion-item>
+          <ion-item><div item-right><p>Chegada :{{ item.DataChegadaPrevista | date:' dd/MM/yyyy - HH:mm' }}</p></div></ion-item>
+          
+        <ion-list-header>Solicitante</ion-list-header>
+          <ion-item><div text-wrap><p>{{ item.Empregado.Nome }}</p></div></ion-item>
+        
+        <ion-list-header>Histórico Status </ion-list-header>
+        <ion-item *ngFor="let status of item.AprovadorSolicitacaoId"> 
+          <p>{{ status.Status.Nome }} </p>
+          <div item-right><p>{{ status.DataStatus | date:' dd/MM/yyyy - HH:mm'}}</p></div>
+        </ion-item>
+
+        <ion-list-header>Viajante(s)</ion-list-header>
+          <ion-item *ngFor="let viajante of item.ViajanteSolicitacaoId"> <div item-right><p>{{ viajante.Empregado.Nome }}</p></div></ion-item>
+        </ion-list>
 
         <div>
+            <button ion-button block (click)="contato($event)">
+                Contatos
+            </button>
+        </div>
+
+
+          <div>
+              <ion-item>
+                <ion-label><h2>Selecione a Aprovação:</h2></ion-label>
+              </ion-item>
+    
+        <form (ngSubmit)="onSubmit($event)" #registerForm="ngForm">
+          <ion-row>
             <ion-item>
-              <ion-label><h2>Selecione o novo Status:</h2></ion-label>
-            </ion-item>
-  
-      <form (ngSubmit)="onSubmit($event)" #registerForm="ngForm">
-        <ion-row>
-          <ion-item>
-              <ion-label>Status</ion-label>
-              <ion-select [(ngModel)]="Status" name="Status" required>
-                <ion-option [value]="item.Id"  *ngFor="let item of ListStatus" >
-                 {{item.Nome}}
-                </ion-option>
-              </ion-select>
-          </ion-item>   
-        </ion-row>
-        
-        <ion-row>
-          <ion-col class="signup-col">
-            <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Confirmar</button>
-          </ion-col>
-        </ion-row>
-      </form>
+                <ion-label>Aprovação</ion-label>
+                <ion-select [(ngModel)]="Status" name="status" required>
+                  <ion-option [value]="item.Id"  *ngFor="let item of ListStatus" >
+                  {{item.Nome}}
+                  </ion-option>
+                </ion-select>
+            </ion-item>   
+          </ion-row>
+          
+          <ion-row>
+            <ion-col class="signup-col">
+              <button ion-button class="submit-btn" full type="submit" [disabled]="!registerForm.form.valid">Confirmar</button>
+            </ion-col>
+          </ion-row>
+        </form>
+        </div>
       </div>
 </ion-content>

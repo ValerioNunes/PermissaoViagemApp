@@ -9,11 +9,12 @@
   </ion-navbar>
 </ion-header>
 
-    <ion-content >
-
+    <ion-content  padding>
+        <div #map id="map"></div>
+        
       <div>
         <ion-item>
-            <ion-label>Oi, {{Solicitante.Nome}}</ion-label>
+          <ion-label><div text-wrap>Oi, {{Solicitante.Nome}}</div></ion-label>
           </ion-item>
       </div>
 
@@ -29,10 +30,10 @@
                                   <img src="assets/imgs/{{note.Status}}.png">
                               </ion-avatar>
 
-                            <div><h4>{{note.Status}}</h4></div>    
-                            <h3>Destino: {{note.Destino}}</h3>  <div item-right><p>SV: {{note.Id}}</p></div>
-                            <h4>Origem : {{note.Origem}}</h4>   
-                            <p>{{note.Partida | date:' dd/MM/yyyy - hh:mm'}}<p> 
+                            <div text-uppercase><h4>{{note.Status}}</h4></div>    
+                            <div text-wrap><h4>Origem : {{note.Origem}}</h4></div>   
+                            <div text-wrap><h4>Destino: {{note.Destino}}</h4></div>  <div item-right><p>SV: {{note.Id}}</p></div>
+                            <div text-wrap><p>Partida: {{note.Partida | date:' dd/MM/yyyy - HH:mm'}}<p></div>
                       </ion-item>
                 </button> 
               </ion-list>

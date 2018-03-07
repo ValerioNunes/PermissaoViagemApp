@@ -15,38 +15,37 @@ import { MensagemProvider } from '../../providers/msg/mensagem'
 })
 export class ContatosPage {
 
-  Contatos  : any;
-  Viajantes : any;
+  Contatos: any;
+  Viajantes: any;
 
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public alertCtrl: AlertController,
+    public msg: MensagemProvider) {
 
-  constructor(public navCtrl  : NavController,
-              public navParams: NavParams,
-              public alertCtrl: AlertController,
-              public msg      :MensagemProvider) {
-
-      this.Contatos = this.navParams.get('Contatos');
-      this.Viajantes = this.navParams.get('Viajantes');
-      console.log(this.Contatos);
-      console.log(this.Viajantes);
+    this.Contatos = this.navParams.get('Contatos');
+    this.Viajantes = this.navParams.get('Viajantes');
+    console.log(this.Contatos);
+    console.log(this.Viajantes);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ContatosPage');
   }
-  LigarParaViajante(viajante){
+  LigarParaViajante(viajante) {
 
-    if(viajante.Empregado.Telefone != null){
+    if (viajante.Empregado.Telefone != null) {
 
-     this.LigarParaTelefone(viajante.Empregado.Telefone);
+      this.LigarParaTelefone(viajante.Empregado.Telefone);
 
-    }else{
+    } else {
       this.showError(viajante.Empregado.Nome + " Não possui número cadastrado");
     }
 
   }
 
-  LigarParaTelefone(Telefone){
-    if(Telefone != null){
+  LigarParaTelefone(Telefone) {
+    if (Telefone != null) {
       this.msg.LigarPara(Telefone);
     }
   }

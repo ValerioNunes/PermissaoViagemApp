@@ -1,0 +1,51 @@
+<!--
+  Generated template for the MapsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Origem e Destino</ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="nextSolicitacao()"><ion-icon name="checkmark"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+   <div #map id="map"></div>
+   <div>
+      <form (ngSubmit)="gerarTrajeto()" #registerForm="ngForm">
+      
+              <ion-item><ion-label>Origem</ion-label></ion-item>
+       
+                    <ion-searchbar 
+                      id =  "origem"
+                      name= "Origem"
+                      [(ngModel)]="addressOrigem"
+                      (change)='onChangeOrigem()'
+                      placeholder="Local Origem"
+                      googleplace required></ion-searchbar>
+             
+
+              <ion-item><ion-label>Destino</ion-label></ion-item>
+                    <ion-searchbar 
+                      id  = "destino"
+                      name= "Destino"
+                      [(ngModel)]="addressDestino"
+                      (change)='onChangeDestino()'
+                      placeholder="Local Destino"
+                      googleplace required></ion-searchbar>
+               
+      </form>
+    </div>  
+    <ion-item><div id="distancia"></div></ion-item>
+    <ion-item><div id="duracao"></div></ion-item>
+
+      <button ion-button full  (click)="nextSolicitacao()">
+        Confirma
+      </button>
+  </ion-content>
+

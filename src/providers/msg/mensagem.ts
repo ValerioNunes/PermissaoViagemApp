@@ -11,25 +11,20 @@ constructor(private emailComposer: EmailComposer,
             private  sms: SMS,
             private callNumber: CallNumber) { }
 
-
-
+     
 public SendEmail(){
-        this.emailComposer.addAlias('gmail', 'com.google.android.gm');
-        this.emailComposer.isAvailable().then((available: boolean) =>{
-        if(available) {
-            let email = {
-                to: 'valerio.nunes@vale.com',
-                cc: 'valeriobsno@gmail.com',
-                bcc: ['john@doe.com', 'jane@doe.com'],
-                attachments: [],
-                subject: 'Solicitação de Viagem',
-                body: 'Você tem uma Solicitação para Analise!',
-                isHtml: true
-            }; 
-            this.emailComposer.open(email);
-            //Now we know we can send
-        }
-        });
+    this.emailComposer.isAvailable().then( () => {
+        // the promise is resolving in this function, so sending is available
+        this.emailComposer.open( {
+            to: 'valerio_breno@hotmail.com',
+            subject: 'valerio_breno@hotmail.com',
+            body: 'App Ionic Teste',
+            isHtml: false
+        } );
+    }, () => {
+        // the promise is being rejected here, sending is not available
+        // do some sort of error code
+    } );
     }
     
 public SendSMS(Mensagem){
@@ -41,8 +36,8 @@ public SendSMS(Mensagem){
                  intent: '' // Sends sms without opening default sms app
             }
     }
-    
-    this.sms.send(Mensagem.Telefone,Mensagem.Texto,options)
+   
+    this.sms.send(Mensagem.Telefone, Mensagem.Texto, options);
 
 }
 

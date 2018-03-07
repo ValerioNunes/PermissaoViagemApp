@@ -14,37 +14,42 @@
 
 <ion-content padding>
 
-    <div>
-        <div>
-            <ion-item>
-              <ion-label><h2>Contatos da Solicitação</h2></ion-label>
-            </ion-item>
-          </div>
-    
-      <ion-list>
-        <button ion-item *ngFor="let contato of   Contatos" (click)="LigarParaTelefone(contato.Telefone)" #slidingItem> 
-            <h2>{{ contato.Telefone }}</h2> <div item-right><ion-icon name="call"></ion-icon></div>
-          </button>
-        </ion-list>
+  <div>
+    <ion-item>
+      <ion-label>
+        <h2>Contatos da Solicitação</h2>
+      </ion-label>
+    </ion-item>
+  </div>
+
+  <ion-list>
+    <button ion-item *ngFor="let contato of   Contatos" (click)="LigarParaTelefone(contato.Telefone)" #slidingItem>
+      <h2>{{ contato.Telefone }}</h2>
+      <div item-right>
+        <ion-icon name="call"></ion-icon>
       </div>
+    </button>
+  </ion-list>
 
   <div>
-    <div>
-        <ion-item>
-          <ion-label><h2>Contato dos Viajantes</h2></ion-label>
-        </ion-item>
-      </div>
-      
-    <ion-list>
-
-        <button ion-item *ngFor="let viajante of Viajantes" (click)="LigarParaViajante(viajante)"> 
-      
-                <h3>{{ viajante.Empregado.Nome }}</h3>
-                <h3>{{ viajante.Empregado.Telefone }}</h3> <div item-right><ion-icon name="call"></ion-icon></div>
-                <h3>{{ viajante.Empregado.Email }}</h3>
-        </button>
-    </ion-list>
-
+    <ion-item>
+      <ion-label>
+        <h2>Contato dos Viajantes</h2>
+      </ion-label>
+    </ion-item>
   </div>
+
+  <ion-list>
+
+    <button ion-item *ngFor="let viajante of Viajantes" (click)="LigarParaViajante(viajante)">
+
+      <h3><div text-wrap><p>{{ viajante.Empregado.Nome }}</p></div></h3>
+      <h3>{{ viajante.Empregado.Telefone }}</h3>
+      <div item-right>
+        <ion-icon name="call"></ion-icon>
+      </div>
+
+    </button>
+  </ion-list>
 
 </ion-content>

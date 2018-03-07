@@ -8,21 +8,21 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import {MinhasSolicitacoesPage} from '../pages/minhas-solicitacoes/minhas-solicitacoes'
+import { MapsPage } from '../pages/maps/maps';
+import { MinhasSolicitacoesPage } from '../pages/minhas-solicitacoes/minhas-solicitacoes'
 import { LoginPage } from '../pages/login/login';
 import { TabsPage } from '../pages/tabs/tabs';
-import {SolicitarviagemPage} from'../pages/solicitarviagem/solicitarviagem';
+import { SolicitarviagemPage } from '../pages/solicitarviagem/solicitarviagem';
 import { AlterarStatusPage } from '../pages/alterar-status/alterar-status';
-import {DadosEmpregadoPage} from '../pages/dados-empregado/dados-empregado';
+import { DadosEmpregadoPage } from '../pages/dados-empregado/dados-empregado';
 import { ContatosPage } from '../pages/contatos/contatos';
 import { BrMaskerModule } from 'brmasker-ionic-3';
 import { HttpClientModule } from '@angular/common/http';
 import { RestProvider } from '../providers/rest/rest';
-import { MensagemProvider }  from '../providers/msg/mensagem';
+import { MensagemProvider } from '../providers/msg/mensagem';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { SMS } from '@ionic-native/sms';
 import { CallNumber } from '@ionic-native/call-number';
-
 
 
 @NgModule({
@@ -35,8 +35,8 @@ import { CallNumber } from '@ionic-native/call-number';
     SolicitarviagemPage,
     AlterarStatusPage,
     DadosEmpregadoPage,
-    ContatosPage
-   
+    ContatosPage,
+    MapsPage
   ],
   imports: [
     BrowserModule,
@@ -55,18 +55,18 @@ import { CallNumber } from '@ionic-native/call-number';
     TabsPage,
     DadosEmpregadoPage,
     ContatosPage,
-    
+    MapsPage
   ],
-  
+
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     RestProvider,
     EmailComposer,
     SMS,
     MensagemProvider,
-    CallNumber,
+    CallNumber
   ]
 })
-export class AppModule {}
+export class AppModule { }
