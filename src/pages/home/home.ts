@@ -20,12 +20,15 @@ export class HomePage {
   loading: Loading;
   MinhasSolicitacoes:any = [];
   Solicitacao: any;
-
+  numViajando: any;
+  Relatorio = [];
 
   private Solicitante: any;
   private Aprovador: any;
   private Status: any;
 
+  status =  ['viajando','nao_aprovado','aprovado','espera','expirado'] 
+  
   constructor(public nav: NavController,
               public restProvider: RestProvider,
               public navParams: NavParams,
@@ -47,31 +50,49 @@ export class HomePage {
    }
 
   loadMap(){
-
+    
       var latLng = new google.maps.LatLng(-2.53073, -44.3068);
-
       var mapOptions = {
         center: latLng,
         zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       }
       this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-    
     }
 
   gerarTrajeto(MinhasSolicitacoes){
 
     this.clearMap();
 
+    var Relatorio =  MinhasSolicitacoes.map(x =>  x.Status).reduce(function (allNames, name) { 
+      if (name in allNames) {
+        allNames[name]++;
+      }
+      else {
+        allNames[name] = 1;
+      }
+      return allNames;
+    }, {});
+    Relatorio =  Object.keys(Relatorio).reduce(function(out, key) {
+      out.push({
+        Status: key,
+        Quantidade: Relatorio[key]
+      });
+      return out;
+    }, []);
+    console.log(Relatorio)
+    this.Relatorio = Relatorio;
+    
     MinhasSolicitacoes.forEach(element => {
+      
         if(element.Status == "viajando" ){
+          this.numViajando++;
           var request = {
             origin:      {'placeId': element.IdOrigemPlace },//new google.maps.LatLng(this.Origem.lat, this.Origem.lng),
             destination: {'placeId': element.IdDestinoPlace},//new google.maps.LatLng(this.Destino.lat, this.Destino.lng),
             travelMode: google.maps.TravelMode.DRIVING,
           }
           
-
           this.directionsDisplay = new google.maps.DirectionsRenderer({
             suppressMarkers: true,
             suppressInfoWindows: true
@@ -87,7 +108,6 @@ export class HomePage {
                   DISTANCIA: lvDirectionsDisplay.directions.routes[0].legs[0].distance.text,
                   DURACAO:   lvDirectionsDisplay.directions.routes[0].legs[0].duration.text
               }
-           
             }
           });
         }
@@ -96,6 +116,7 @@ export class HomePage {
    }
 
   clearMap(){
+    this.numViajando =  0;
     if(this.directionsDisplay != null) {
       this.directionsDisplay.setMap(null);
       this.directionsDisplay = null;

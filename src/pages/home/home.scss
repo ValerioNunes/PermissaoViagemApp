@@ -19,6 +19,7 @@
             height: 100%;
             margin: 0;
             padding: 0;
+            
           }
           .controls {
             margin-top: 10px;
@@ -48,6 +49,20 @@
           }
           #target {
             width: 345px;
-          }         
+          }  
+          .testclass{
+             font-size: 20px !important;
+            
+             }  
+         ion-content {
+              background-color:rgb(21, 143, 62);
+          }     
+        ion-item {
+            background-color:rgb(192, 231, 184);
+        }  
+        ion-list{
+            background-color:rgb(238, 234, 23);
+        }
   }
+
 }

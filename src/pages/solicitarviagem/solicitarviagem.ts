@@ -1,9 +1,8 @@
 
-import { Component, ViewChild, ElementRef  } from "@angular/core/";
+import { Component } from "@angular/core/";
 import { IonicPage, NavController, AlertController, NavParams , Loading, LoadingController } from 'ionic-angular';
 import { RestProvider } from '../../providers/rest/rest';
 import { MensagemProvider } from '../../providers/msg/mensagem';
-import { BrMaskerModule } from 'brmasker-ionic-3';
 import moment from 'moment';
 /**
  * Generated class for the SolicitarviagemPage page.
@@ -37,6 +36,8 @@ export class SolicitarviagemPage {
   today = moment().format();
   SolicitacaoViagem  = this.FormatSolicitacao();
 
+ 
+
   constructor(  public navCtrl: NavController,
                 public restProvider: RestProvider,
                 public navParams: NavParams,
@@ -51,7 +52,10 @@ export class SolicitarviagemPage {
 
   ionViewDidLoad() {
    }
- 
+
+  gerarRelatorio(){
+    
+  } 
   onSubmit(formData) {
       if(this.formValidacao()) {
         this.showLoading();
@@ -104,7 +108,7 @@ export class SolicitarviagemPage {
                         this.Viajantes.forEach(viajante =>  this.SolicitacaoViagem.Viajantes.push(viajante.Id) );
                         this.SolicitacaoViagem.Contatos = this.Telefones;
                         this.SolicitacaoViagem.Partida  = this.SolicitacaoViagem.Partida.toString().replace("Z","");
-                        this.SolicitacaoViagem.Chegada  = this.SolicitacaoViagem.Partida.toString().replace("Z","");
+                        this.SolicitacaoViagem.Chegada  = this.SolicitacaoViagem.Chegada.toString().replace("Z","");
                         this.Viajantes = []; 
                         this.Telefones = [];
                         return true;
@@ -255,8 +259,8 @@ export class SolicitarviagemPage {
                   Transporte : '',
                   Aprovador  : '',
                   Solicitante: this.navParams.get("Solicitante").Id,
-                  Partida    : this.today,
-                  Chegada    : this.today,
+                  Partida    : '',
+                  Chegada    : '',
                   Contatos   : [],
                   Viajantes  : []}
         }

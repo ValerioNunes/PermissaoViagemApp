@@ -16,7 +16,7 @@
 
 <ion-content padding>
    <div #map id="map"></div>
-   <div>
+   <div padding-top>
       <form (ngSubmit)="gerarTrajeto()" #registerForm="ngForm">
       
               <ion-item><ion-label>Origem</ion-label></ion-item>
@@ -44,7 +44,7 @@
     <ion-item><div id="distancia"></div></ion-item>
     <ion-item><div id="duracao"></div></ion-item>
 
-      <button ion-button full  (click)="nextSolicitacao()">
+      <button class="submit-btn" ion-button full  (click)="nextSolicitacao()">
         Confirma
       </button>
   </ion-content>

@@ -9,20 +9,33 @@
   </ion-navbar>
 </ion-header>
 
-    <ion-content  padding>
-        <div #map id="map"></div>
-        
-      <div>
-        <ion-item>
-          <ion-label><div text-wrap>Oi, {{Solicitante.Nome}}</div></ion-label>
-          </ion-item>
-      </div>
+    <ion-content padding>
+
+    <div>
+      <ion-item>
+        <ion-label><div text-wrap>Oi, {{Solicitante.Nome}}</div></ion-label>
+      </ion-item>
+    </div>
+
+    <div #map id="map"></div>
 
       <div>
-          <ion-item>
-            <ion-label><h2>Solicitações em Andamento</h2></ion-label>
-          </ion-item>
-      <div>
+        <ion-list>
+                    <ion-item  *ngFor="let item of Relatorio" >   
+                            <ion-avatar item-start>
+                                <img src="assets/imgs/{{item.Status}}.png">
+                            </ion-avatar>
+                            <div  text-wrap text-uppercase>Solicitação {{item.Status}} : {{item.Quantidade}} </div>
+                    </ion-item> 
+         </ion-list>
+
+      </div>     
+         
+      
+            <ion-item>
+             <ion-label text-wrap text-center class="testclass" >Minhas Solicitações de Viagem</ion-label>
+            </ion-item>
+        <div>
           <ion-list>
                 <button ion-item *ngFor="let note of MinhasSolicitacoes" (click)="itemSelected(note)" #slidingItem>      
                       <ion-item>   
@@ -30,7 +43,7 @@
                                   <img src="assets/imgs/{{note.Status}}.png">
                               </ion-avatar>
 
-                            <div text-uppercase><h4>{{note.Status}}</h4></div>    
+                            <div  padding text-uppercase text-center><h4>{{note.Status}}</h4></div>   
                             <div text-wrap><h4>Origem : {{note.Origem}}</h4></div>   
                             <div text-wrap><h4>Destino: {{note.Destino}}</h4></div>  <div item-right><p>SV: {{note.Id}}</p></div>
                             <div text-wrap><p>Partida: {{note.Partida | date:' dd/MM/yyyy - HH:mm'}}<p></div>
@@ -38,6 +51,5 @@
                 </button> 
               </ion-list>
             </div>    
-           </div> 
     </ion-content>
 

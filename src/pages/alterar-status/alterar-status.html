@@ -17,8 +17,9 @@
    <div #map id="map"></div>
 
    <div>
-    <ion-list-header>Dados de Trajeto</ion-list-header>   
-      <ion-item>
+   
+      <ion-item> 
+        <ion-list-header>Dados de Trajeto</ion-list-header>   
         <div  id="distancia"></div>
         <div  id="duracao"></div>
       </ion-item>
@@ -26,10 +27,10 @@
     <ion-list *ngFor="let item of Solicitacao">
         
         <ion-list-header>Origem</ion-list-header>
-          <ion-item><div item-right>{{ item.Origem.Nome }}</div></ion-item>
+          <ion-item><div item-right  text-uppercase>{{ item.Origem.Nome }}</div></ion-item>
 
         <ion-list-header>Destino</ion-list-header>
-          <ion-item><div item-right>{{ item.Destino.Nome }}</div></ion-item>
+          <ion-item><div item-right  text-uppercase>{{ item.Destino.Nome }}</div></ion-item>
 
         <ion-list-header>Transporte</ion-list-header>
           <ion-item><div item-right>{{ item.Transporte.Nome }}</div></ion-item>
@@ -43,8 +44,8 @@
         
         <ion-list-header>Histórico Status </ion-list-header>
         <ion-item *ngFor="let status of item.AprovadorSolicitacaoId"> 
-          <p>{{ status.Status.Nome }} </p>
-          <div item-right><p>{{ status.DataStatus | date:' dd/MM/yyyy - HH:mm'}}</p></div>
+          <div text-uppercase> <p>{{ status.Status.Nome }} </p> </div>
+          <div item-right  text-uppercase><p>{{ status.DataStatus | date:' dd/MM/yyyy - HH:mm'}}</p></div>
         </ion-item>
 
         <ion-list-header>Viajante(s)</ion-list-header>
@@ -52,13 +53,12 @@
         </ion-list>
 
         <div>
-            <button ion-button block (click)="contato($event)">
+            <button class="submit-btn" ion-button block (click)="contato($event)">
                 Contatos
             </button>
         </div>
 
-
-          <div>
+        <div>
               <ion-item>
                 <ion-label><h2>Selecione a Aprovação:</h2></ion-label>
               </ion-item>
