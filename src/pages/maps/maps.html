@@ -19,8 +19,8 @@
    <div padding-top>
       <form (ngSubmit)="gerarTrajeto()" #registerForm="ngForm">
       
-              <ion-item><ion-label>Origem</ion-label></ion-item>
-       
+             <ion-label text-right class="testclass">Origem</ion-label>
+                  <div>
                     <ion-searchbar 
                       id =  "origem"
                       name= "Origem"
@@ -28,9 +28,11 @@
                       (change)='onChangeOrigem()'
                       placeholder="Local Origem"
                       googleplace required></ion-searchbar>
-             
+                  </div>
+               
 
-              <ion-item><ion-label>Destino</ion-label></ion-item>
+              <ion-label  text-right class="testclass">Destino</ion-label>
+                <div>
                     <ion-searchbar 
                       id  = "destino"
                       name= "Destino"
@@ -38,6 +40,8 @@
                       (change)='onChangeDestino()'
                       placeholder="Local Destino"
                       googleplace required></ion-searchbar>
+                </div>    
+              
                
       </form>
     </div>  

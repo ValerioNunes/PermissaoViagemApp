@@ -110,15 +110,24 @@ export class AlterarStatusPage {
       console.log(allowed);
 
       if(allowed == 'Sua solicitação foi cadastrada com sucesso!'){
+    
+         
+         setTimeout(() => {
+          this.EnviarMensagem(this.Status);
+          }, 500);
 
-         this.showError("Status alterado com  SUCESSO!")      
-         this.EnviarMensagem(this.Status);
-         this.navCtrl.pop();
+
       }else{
         this.showError("NÃO foi possível realizar alteração do Status!")
       }
      
         this.loading.dismiss();
+
+      if(allowed == 'Sua solicitação foi cadastrada com sucesso!'){
+          this.showError("Status alterado com  SUCESSO!")  
+          this.navCtrl.pop();
+      }
+
     }).catch(error => { console.log(error) });
     }
 
@@ -135,12 +144,11 @@ export class AlterarStatusPage {
             else if(Status == 5)
               StatusNome = "VIAJANDO";
 
-      //this.EnviarSMS(this.Aprovador  , StatusNome );
-
+      //this.EnviarSMS(this.Aprovador , StatusNome );
       this.EnviarSMS(this.Solicitante, StatusNome );
       this.Viajantes.forEach(element => {
-      this.EnviarSMS(element.Empregado,StatusNome);
-      console.log(element.Empregado);
+        if((element.Id != this.Solicitante.Id) && (element.Id != this.Aprovador.Id))
+              this.EnviarSMS(element.Empregado,StatusNome);
       });
 
    }
@@ -149,7 +157,7 @@ export class AlterarStatusPage {
    let Mensagem = { Telefone : Empregado.Telefone,
                    Texto   : "Permissao Viagem - "+
                               "Viagem - SV : "+this.Solicitacao[0].Id+" De: " +this.Solicitacao[0].Origem.Nome
-                              +" Para: " +this.Solicitacao[0].Destino.Nome +" *"+ StatusNome+"* "
+                              +" Para: " +this.Solicitacao[0].Destino.Nome +" <"+ StatusNome+">"
       };
     this.msg.SendSMS(Mensagem);
    }
@@ -162,7 +170,7 @@ export class AlterarStatusPage {
   showLoading() {
     this.loading = this.loadingCtrl.create({
     content: 'Aguarde...',
-    dismissOnPageChange: true
+    dismissOnPageChange: false
     });
     this.loading.present();
     }

@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 
-    <ion-content padding>
+    <ion-content padding-top>
 
     <div>
       <ion-item>
@@ -19,14 +19,16 @@
 
     <div #map id="map"></div>
 
-      <div>
+      <div padding>
         <ion-list>
-                    <ion-item  *ngFor="let item of Relatorio" >   
+            <button ion-item  *ngFor="let item of Relatorio" (click)="gerarTrafego(item)" #slidingItem>
+                    <ion-item  >   
                             <ion-avatar item-start>
                                 <img src="assets/imgs/{{item.Status}}.png">
                             </ion-avatar>
                             <div  text-wrap text-uppercase>Solicitação {{item.Status}} : {{item.Quantidade}} </div>
                     </ion-item> 
+            </button>
          </ion-list>
 
       </div>     

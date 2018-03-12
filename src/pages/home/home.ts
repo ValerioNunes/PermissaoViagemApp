@@ -41,12 +41,11 @@ export class HomePage {
   
   }
   ionViewWillEnter() {
-    console.log(this.Solicitante.Telefone);
     this.verificarTelefone(this.Solicitante);
     this.getMinhasSolicitacoes();
    }
   ionViewDidLoad() {
-    this.loadMap();
+   //this.loadMap();
    }
 
   loadMap(){
@@ -60,11 +59,8 @@ export class HomePage {
       this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
     }
 
-  gerarTrajeto(MinhasSolicitacoes){
-
-    this.clearMap();
-
-    var Relatorio =  MinhasSolicitacoes.map(x =>  x.Status).reduce(function (allNames, name) { 
+  resumoStatus(){
+    var Relatorio =  this.MinhasSolicitacoes.map(x =>  x.Status).reduce(function (allNames, name) { 
       if (name in allNames) {
         allNames[name]++;
       }
@@ -82,23 +78,31 @@ export class HomePage {
     }, []);
     console.log(Relatorio)
     this.Relatorio = Relatorio;
+    this.loadMap();
+   }
+  
+  gerarTrafego(Status){
+
     
-    MinhasSolicitacoes.forEach(element => {
+    this.loadMap();
+
+    this.MinhasSolicitacoes.forEach(element => {
       
-        if(element.Status == "viajando" ){
-          this.numViajando++;
+        if(element.Status == Status.Status){
           var request = {
             origin:      {'placeId': element.IdOrigemPlace },//new google.maps.LatLng(this.Origem.lat, this.Origem.lng),
             destination: {'placeId': element.IdDestinoPlace},//new google.maps.LatLng(this.Destino.lat, this.Destino.lng),
             travelMode: google.maps.TravelMode.DRIVING,
           }
-          
-          this.directionsDisplay = new google.maps.DirectionsRenderer({
-            suppressMarkers: true,
-            suppressInfoWindows: true
-           });
+       
+            this.directionsDisplay = new google.maps.DirectionsRenderer({
+              suppressMarkers: false,
+              suppressInfoWindows: false
+            });
+    
           var directionsService = new google.maps.DirectionsService;
           this.directionsDisplay.setMap(this.map);
+
 
           let lvDirectionsDisplay = this.directionsDisplay;
           directionsService.route(request,  function (result, status) {
@@ -116,8 +120,9 @@ export class HomePage {
    }
 
   clearMap(){
-    this.numViajando =  0;
+
     if(this.directionsDisplay != null) {
+      
       this.directionsDisplay.setMap(null);
       this.directionsDisplay = null;
       }
@@ -126,27 +131,19 @@ export class HomePage {
   getMinhasSolicitacoes() {
     this.showLoading();
     this.restProvider.getMinhasSolicitacoes(this.Solicitante.Id)
-      .then(data => {
-        this.MinhasSolicitacoes = data;
-        this.gerarTrajeto(this.MinhasSolicitacoes);
+      .then(data => { 
         this.loading.dismiss();
-
+        this.MinhasSolicitacoes = data;
+        this.resumoStatus();
       });
      
    }
 
- 
-
-
-
   verificarTelefone(Empregado) {
-    if (Empregado.Telefone == null) {
-      this.nav.push(DadosEmpregadoPage, this.navParams);
+      if (Empregado.Telefone == null) {
+        this.nav.push(DadosEmpregadoPage, this.navParams);
+      }
     }
-    }
-
-
-
 
   showError(text) {
     let alert = this.alertCtrl.create({
@@ -161,7 +158,7 @@ export class HomePage {
 
     this.loading = this.loadingCtrl.create({
       content: 'Aguarde! Consultando Solicitações...',
-      dismissOnPageChange: true
+      dismissOnPageChange: false
     });
     this.loading.present();
    }
@@ -181,21 +178,39 @@ export class HomePage {
 
   userAprovador(item) {
 
-    if (item.Status == 'aguardando') {
-      this.buscarSolicitacaoAlterarStatus(item.Id, [this.Status[1], this.Status[2]]);
-    } else {
-      this.buscarSolicitacaoAlterarStatus(item.Id, []);
-    }
+      if (item.Status == 'aguardando') {
+        this.buscarSolicitacaoAlterarStatus(item.Id, [this.Status[1], this.Status[2]]);
+      } else {
+        this.buscarSolicitacaoAlterarStatus(item.Id, []);
+      }
     }
 
   userSolicitante(item) {
-    if (item.Status == "aprovado" || item.Status == "nao_aprovado") {
-      this.buscarSolicitacaoAlterarStatus(item.Id, [this.Status[4]]);
-    } else if (item.Status == this.Status[4].Nome) {
-      this.buscarSolicitacaoAlterarStatus(item.Id, [this.Status[3]]);
-    } else {
-      this.buscarSolicitacaoAlterarStatus(item.Id, []);
-    }
+
+        switch(item.Status) { 
+      
+          case "nao_aprovado": {   
+              this.buscarSolicitacaoAlterarStatus(item.Id, [this.Status[3]]);
+            break; 
+          }       
+          case "aprovado": { 
+              this.buscarSolicitacaoAlterarStatus(item.Id, [this.Status[4]]); 
+            break; 
+          } 
+          case "viajando": { 
+            this.buscarSolicitacaoAlterarStatus(item.Id,   [this.Status[3]]); 
+          break; 
+          }
+          case "encerrado": { 
+            this.buscarSolicitacaoAlterarStatus(item.Id,[]); 
+          break; 
+          }
+          case "expirado": { 
+            this.buscarSolicitacaoAlterarStatus(item.Id,[]); 
+          break; 
+          }
+      } 
+
     }
 
   itemSelected(item) {

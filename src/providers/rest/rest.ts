@@ -15,8 +15,11 @@ import 'rxjs/add/operator/map';
 export class RestProvider {
   currentUser: any;
 
-  apiUrl = 'http://192.168.13.18/solicitacaoviagem/api';
-  placeUrl = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=BuscaID&key=AIzaSyA_BxomwSlI5BuebULTjOtNvnXJv7qHILY';
+  //apiUrl = 'http://192.168.13.18/solicitacaoviagem/api';
+
+  apiUrl = 'http://172.20.15.22/permissaoviagem/api';
+
+  //placeUrl = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=BuscaID&key=AIzaSyA_BxomwSlI5BuebULTjOtNvnXJv7qHILY';
   constructor(public http: HttpClient ) {
     console.log('Hello RestProvider Provider');
 
@@ -77,21 +80,7 @@ export class RestProvider {
     });
   }
 
-  getPlace(id) {
-    let link = this.placeUrl.replace('BuscaID',id);
 
-    return new Promise(response => {
-      this.http.get(link,
-        {
-          headers: new HttpHeaders().set('Content-Type', 'application/json')
-        }).subscribe(data => {
-          response(data);
-        }, err => {
-          console.log(err);
-          response(false);
-        });
-    });
-  }
 
   getSolicitacao(Matricula) {
     return new Promise(resolve => {
