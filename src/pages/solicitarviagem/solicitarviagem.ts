@@ -51,7 +51,7 @@ export class SolicitarviagemPage {
   }
 
   ionViewDidLoad() {
-   }
+  }
 
   gerarRelatorio(){
     
@@ -65,15 +65,20 @@ export class SolicitarviagemPage {
 
             if(allowed == 'Sua solicitação foi cadastrada com sucesso!'){
               
+                this.loading.dismiss();
                 this.enviarMensagemSMS();    
                 this.SolicitacaoViagem = this.FormatSolicitacao();
+
+                
                 this.showError("Solicitação relizada com SUCESSO!");
                 this.navCtrl.pop();
+
             }else{
+              this.loading.dismiss();
               this.showError("NÃO foi possível realizar Solicitação!");
             }
            
-            this.loading.dismiss();
+
         }).catch(error => { console.log(error) });
 
     }
@@ -89,9 +94,8 @@ export class SolicitarviagemPage {
         let Mensagem = { Telefone : element.Telefone,
                         Texto     : "Permissão Viagem - +1 Solicitação AGUARDADO Análise" 
                         };
-        //this.msg.SendSMS(Mensagem);
+        this.msg.SendSMS(Mensagem);
                   }
-
     }
 
 
