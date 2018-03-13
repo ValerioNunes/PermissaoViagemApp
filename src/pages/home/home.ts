@@ -177,14 +177,12 @@ export class HomePage {
    }
 
   userAprovador(item) {
-
       if (item.Status == 'aguardando') {
         this.buscarSolicitacaoAlterarStatus(item.Id, [this.Status[1], this.Status[2]]);
       } else {
         this.buscarSolicitacaoAlterarStatus(item.Id, []);
       }
     }
-
   userSolicitante(item) {
 
         switch(item.Status) { 
@@ -206,6 +204,10 @@ export class HomePage {
           break; 
           }
           case "expirado": { 
+            this.buscarSolicitacaoAlterarStatus(item.Id,[]); 
+          break; 
+          }
+          case "aguardando": { 
             this.buscarSolicitacaoAlterarStatus(item.Id,[]); 
           break; 
           }

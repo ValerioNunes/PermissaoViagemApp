@@ -64,17 +64,22 @@ export class DadosEmpregadoPage {
   
     console.log(Empregado);
     this.restProvider.setEmpregado(Empregado).then(allowed => {
+      this.loading.dismiss();
       console.log(allowed);
       this.showError("Cadastrado com SUCESSO");
-
+      
       let Mensagem = { Telefone : Empregado.Telefone,
                        Texto    : "Permissao Viagem - Número Atualizado com Sucesso" 
                       };
-      this.msg.SendSMS(Mensagem);
+      
+      setTimeout(() => {
+         this.msg.SendSMS(Mensagem);
+        }, 500);
 
-    }).catch(error => { console.log(error); });
+        this.navCtrl.pop();
+    }).catch(error => { console.log(error);  this.loading.dismiss();  this.showError("Falha na Conexão");});
 
-    this.loading.dismiss();
+    
   }
 
 

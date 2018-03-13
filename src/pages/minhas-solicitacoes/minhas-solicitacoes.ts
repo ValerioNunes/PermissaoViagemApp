@@ -32,11 +32,7 @@ export class MinhasSolicitacoesPage {
   }
 
   ionViewWillEnter() {
-    this.getMinhasSolicitacoes();
-    
-    this.MinhasSolicitacoes.forEach(element => {
-      
-    });
+
   }
 
   getMinhasSolicitacoes() {
