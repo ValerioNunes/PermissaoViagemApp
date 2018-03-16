@@ -26,7 +26,7 @@
                             <ion-avatar item-start>
                                 <img src="assets/imgs/{{item.Status}}.png">
                             </ion-avatar>
-                            <div  text-wrap text-uppercase>Solicitação {{item.Status}} : {{item.Quantidade}} </div>
+                            <div  text-wrap text-uppercase>{{item.Status}} : {{item.Quantidade}} </div>
                     </ion-item> 
             </button>
          </ion-list>
@@ -47,8 +47,8 @@
 
                             <div  padding text-uppercase text-center><h4>{{note.Status}}</h4></div>   
                             <div text-wrap><h4>Origem : {{note.Origem}}</h4></div>   
-                            <div text-wrap><h4>Destino: {{note.Destino}}</h4></div>  <div item-right><p>SV: {{note.Id}}</p></div>
-                            <div text-wrap><p>Partida: {{note.Partida | date:' dd/MM/yyyy - HH:mm'}}<p></div>
+                            <div text-wrap><h4>Destino: {{note.Destino}}</h4></div>  <div item-right><h4>SV: {{note.Id}}</h4></div>
+                            <div text-wrap><h4>Partida: {{note.Partida | date:' dd/MM/yyyy - HH:mm'}}</h4></div>
                       </ion-item>
                 </button> 
               </ion-list>

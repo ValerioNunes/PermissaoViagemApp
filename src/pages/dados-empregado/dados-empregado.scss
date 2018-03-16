@@ -6,7 +6,7 @@ page-dados-empregado {
           background-color:rgb(192, 231, 184);
       }  
       ion-list{
-          background-color:rgb(238, 234, 23);
+          background-color:#ffc000;
       } 
       ion-header{
         background-color:rgb(192, 231, 184);
@@ -16,9 +16,13 @@ page-dados-empregado {
        
         }  
       .submit-btn {
-        background: rgb(218, 214, 31);
+        background: #ffc000;
         border-radius: 30px !important;
         border: 1px solid #ffffff;
         color: rgb(21, 143, 62);
       }
+      ion-item {
+        background-color:#007E7A;
+        color: #fff;
+    }  
 }

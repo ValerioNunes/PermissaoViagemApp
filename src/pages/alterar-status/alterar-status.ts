@@ -37,6 +37,7 @@ export class AlterarStatusPage {
   Origem: any;
   Destino: any;
 
+  Observacao: any;
 
   loading: Loading;
 
@@ -79,7 +80,7 @@ export class AlterarStatusPage {
       var directionsService = new google.maps.DirectionsService;
 
       this.directionsDisplay.setMap(this.map);
-
+      
       var request = {
         origin: {'placeId': this.Solicitacao[0].Origem.IdPlace },//new google.maps.LatLng(this.Origem.lat, this.Origem.lng),
         destination: {'placeId': this.Solicitacao[0].Destino.IdPlace },//new google.maps.LatLng(this.Destino.lat, this.Destino.lng),
@@ -103,7 +104,8 @@ export class AlterarStatusPage {
   onSubmit(event){
     
     this.NovoStatus.StatusId =  this.Status;
-   
+    this.NovoStatus.Observacao = this.Observacao;
+
     this.showLoading();
 
     this.restProvider.setStatusSolicitacao(this.NovoStatus).then(allowed => {
@@ -164,7 +166,8 @@ export class AlterarStatusPage {
 
   private FormatStatus(){
     return  { SolicitacaoViagemId     : '',
-              StatusId                : ''}
+              StatusId                : '',
+              Observacao              : ''}
     }
   
   showLoading() {

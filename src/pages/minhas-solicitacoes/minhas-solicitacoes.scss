@@ -51,13 +51,14 @@ page-minhas-solicitacoes {
       
           }       
             ion-content {
-              background-color:rgb(21, 143, 62);
+              background-color:rgb(21, 143, 62) !important;
             }     
             ion-item {
-                background-color:rgb(192, 231, 184);
-            }  
+              background-color:#007E7A !important;
+              color: #fff  !important;
+             }  
             .submit-btn {
-              background: rgb(218, 214, 31);
+              background: #ffc000;
               border-radius: 30px !important;
               border: 1px solid #ffffff;
               color: rgb(21, 143, 62);

@@ -8,20 +8,17 @@
  
     <ion-navbar>
       <ion-title>Minha Conta</ion-title>
-      <ion-buttons end>
-          <button ion-button icon-only (click)="getMinhasSolicitacoes()"><ion-icon name="md-refresh"></ion-icon></button>
-      </ion-buttons>
     </ion-navbar> 
   </ion-header>
-  <ion-content>
+
+  <ion-content padding>
     <ion-item>
       <ion-list>
-        <ion-list-header>Meus Dados</ion-list-header>
-          <ion-item>{{ Solicitante.Nome }}</ion-item>
+          <ion-item text-wrap>{{ Solicitante.Nome }}</ion-item>
           <ion-item>Matricula : {{ Solicitante.Id }}</ion-item>
           <ion-item>Telefone  : {{ Solicitante.Telefone }}</ion-item>
-          <ion-item>Email     : {{ Solicitante.Email }}</ion-item>
-          <ion-item>Supervisão: {{ Solicitante.Supervisao }}</ion-item>
+          <ion-item text-wrap>Email     : {{ Solicitante.Email }}</ion-item>
+          <ion-item text-wrap>Supervisão: {{ Solicitante.Supervisao }}</ion-item>
       </ion-list>
     </ion-item>
 

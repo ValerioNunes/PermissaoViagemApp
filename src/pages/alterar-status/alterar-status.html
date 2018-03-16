@@ -13,43 +13,51 @@
 </ion-header>
 
   <ion-content padding>  
-        
-   <div #map id="map"></div>
-
+        <div #map id="map"></div>
    <div>
    
-      <ion-item> 
-        <ion-list-header>Dados de Trajeto</ion-list-header>   
-        <div  id="distancia"></div>
-        <div  id="duracao"></div>
-      </ion-item>
+      <ion-list> 
+        <ion-list-header>Dados de Trajeto</ion-list-header> 
+        <ion-item>  
+            <div  id="distancia"></div>
+            <div  id="duracao"></div>
+        </ion-item>
+      </ion-list>
 
     <ion-list *ngFor="let item of Solicitacao">
         
         <ion-list-header>Origem</ion-list-header>
-          <ion-item><div item-right  text-uppercase>{{ item.Origem.Nome }}</div></ion-item>
+          <ion-item padding><div item-right  text-uppercase>{{ item.Origem.Nome }}</div></ion-item>
 
         <ion-list-header>Destino</ion-list-header>
-          <ion-item><div item-right  text-uppercase>{{ item.Destino.Nome }}</div></ion-item>
+          <ion-item padding><div item-right  text-uppercase>{{ item.Destino.Nome }}</div></ion-item>
 
         <ion-list-header>Transporte</ion-list-header>
-          <ion-item><div item-right>{{ item.Transporte.Nome }}</div></ion-item>
+          <ion-item padding><div item-right>{{ item.Transporte.Nome }}</div></ion-item>
 
         <ion-list-header>Data</ion-list-header>
-          <ion-item><div item-right><p>Partida  :{{ item.DataPartida | date:' dd/MM/yyyy - HH:mm'}}</p></div></ion-item>
-          <ion-item><div item-right><p>Chegada :{{ item.DataChegadaPrevista | date:' dd/MM/yyyy - HH:mm' }}</p></div></ion-item>
+          <ion-item  padding><div item-right><h4>Partida  :{{ item.DataPartida | date:' dd/MM/yyyy - HH:mm'}}</h4></div></ion-item>
+          <ion-item padding><div item-right><h4>Chegada :{{ item.DataChegadaPrevista | date:' dd/MM/yyyy - HH:mm' }}</h4></div></ion-item>
           
         <ion-list-header>Solicitante</ion-list-header>
-          <ion-item><div text-wrap><p>{{ item.Empregado.Nome }}</p></div></ion-item>
-        
-        <ion-list-header>Histórico Status </ion-list-header>
-        <ion-item *ngFor="let status of item.AprovadorSolicitacaoId"> 
-          <div text-uppercase> <p>{{ status.Status.Nome }} </p> </div>
-          <div item-right  text-uppercase><p>{{ status.DataStatus | date:' dd/MM/yyyy - HH:mm'}}</p></div>
+          <ion-item padding><div text-wrap><h4>{{ item.Empregado.Nome }}</h4></div></ion-item>
+
+        <ion-list-header>Aprovador</ion-list-header>
+          <ion-item padding><div text-wrap><h4>{{ item.AprovadorSolicitacaoId[0].Aprovador.Empregado.Nome }}</h4></div></ion-item>    
+
+        <ion-list-header >Histórico Status </ion-list-header>
+        <ion-item padding *ngFor="let status of item.AprovadorSolicitacaoId"> 
+            <ion-avatar item-start>
+                <img src="assets/imgs/{{status.Status.Nome}}.png">
+            </ion-avatar>
+          <div text-uppercase><h4>{{ status.Status.Nome }}</h4></div>
+          <div text-uppercase><h4>{{ status.DataStatus | date:' dd/MM/yyyy - HH:mm'}}</h4></div>
+          <div text-wrap text-center class="observacao"> {{ status.Observacao }} </div>
+          
         </ion-item>
 
         <ion-list-header>Viajante(s)</ion-list-header>
-          <ion-item *ngFor="let viajante of item.ViajanteSolicitacaoId"> <div item-right><p>{{ viajante.Empregado.Nome }}</p></div></ion-item>
+          <ion-item *ngFor="let viajante of item.ViajanteSolicitacaoId"> <div item-right><h4>{{ viajante.Empregado.Nome }}</h4></div></ion-item>
         </ion-list>
 
         <div>
@@ -59,14 +67,19 @@
         </div>
 
         <div>
-              <ion-item>
-                <ion-label><h2>Selecione a Aprovação:</h2></ion-label>
-              </ion-item>
+
     
         <form (ngSubmit)="onSubmit($event)" #registerForm="ngForm">
           <ion-row>
+                  <ion-label><h4>Observação:</h4></ion-label>
+              <ion-item>
+                  <ion-textarea placeholder="Digite a observação" [(ngModel)]="Observacao" name="obs"></ion-textarea>
+                </ion-item>
+          </ion-row>
+          <ion-row>            
+                <ion-label><h4>Selecione a Aprovação:</h4></ion-label>
             <ion-item>
-                <ion-label>Aprovação</ion-label>
+                <ion-label>Status</ion-label>
                 <ion-select [(ngModel)]="Status" name="status" required>
                   <ion-option [value]="item.Id"  *ngFor="let item of ListStatus" >
                   {{item.Nome}}

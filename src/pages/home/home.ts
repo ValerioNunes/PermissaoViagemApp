@@ -19,6 +19,8 @@ export class HomePage {
 
   loading: Loading;
   MinhasSolicitacoes:any = [];
+ 
+  TodasSolicitacoes:any = [];
   Solicitacao: any;
   numViajando: any;
   Relatorio = [];
@@ -28,7 +30,8 @@ export class HomePage {
   private Status: any;
 
   status =  ['viajando','nao_aprovado','aprovado','espera','expirado'] 
-  
+  StatusPrinc = ["aguardando","viajando","aprovado","nao_aprovado"]
+
   constructor(public nav: NavController,
               public restProvider: RestProvider,
               public navParams: NavParams,
@@ -60,7 +63,7 @@ export class HomePage {
     }
 
   resumoStatus(){
-    var Relatorio =  this.MinhasSolicitacoes.map(x =>  x.Status).reduce(function (allNames, name) { 
+    var Relatorio =  this.TodasSolicitacoes.map(x =>  x.Status).reduce(function (allNames, name) { 
       if (name in allNames) {
         allNames[name]++;
       }
@@ -76,16 +79,15 @@ export class HomePage {
       });
       return out;
     }, []);
-    console.log(Relatorio)
+   
     this.Relatorio = Relatorio;
     this.loadMap();
    }
   
   gerarTrafego(Status){
-
-    
+    var Solicitacao = this.TodasSolicitacoes.filter(s => s.Status === Status.Status);
+    this.setMinhasSolicitacoes(Solicitacao);
     this.loadMap();
-
     this.MinhasSolicitacoes.forEach(element => {
       
         if(element.Status == Status.Status){
@@ -115,7 +117,7 @@ export class HomePage {
             }
           });
         }
-   });
+     });
   
    }
 
@@ -133,12 +135,18 @@ export class HomePage {
     this.restProvider.getMinhasSolicitacoes(this.Solicitante.Id)
       .then(data => { 
         this.loading.dismiss();
-        this.MinhasSolicitacoes = data;
+        
+        this.TodasSolicitacoes = data;
+
+        var Solicitacao = this.TodasSolicitacoes.filter(s => this.StatusPrinc.findIndex(x => x === s.Status ) >= 0);
+        this.setMinhasSolicitacoes(Solicitacao);
         this.resumoStatus();
       });
      
    }
-
+  setMinhasSolicitacoes(TodasSolicitacoes){
+    this.MinhasSolicitacoes = TodasSolicitacoes;
+   }
   verificarTelefone(Empregado) {
       if (Empregado.Telefone == null) {
         this.nav.push(DadosEmpregadoPage, this.navParams);
@@ -177,11 +185,21 @@ export class HomePage {
    }
 
   userAprovador(item) {
-      if (item.Status == 'aguardando') {
+    switch(item.Status) { 
+      
+      case "aguardando": {   
         this.buscarSolicitacaoAlterarStatus(item.Id, [this.Status[1], this.Status[2]]);
-      } else {
+        break; 
+      }       
+      case "cancelado": {   
+        this.buscarSolicitacaoAlterarStatus(item.Id,[this.Status[3]]);
+        break; 
+      }    
+      default:{
         this.buscarSolicitacaoAlterarStatus(item.Id, []);
+       break; 
       }
+    }
     }
   userSolicitante(item) {
 
@@ -192,7 +210,7 @@ export class HomePage {
             break; 
           }       
           case "aprovado": { 
-              this.buscarSolicitacaoAlterarStatus(item.Id, [this.Status[4]]); 
+              this.buscarSolicitacaoAlterarStatus(item.Id, [this.Status[4],this.Status[6]]); 
             break; 
           } 
           case "viajando": { 
@@ -211,8 +229,12 @@ export class HomePage {
             this.buscarSolicitacaoAlterarStatus(item.Id,[]); 
           break; 
           }
+          case "cancelado": { 
+            this.buscarSolicitacaoAlterarStatus(item.Id,[]); 
+          break; 
+          
       } 
-
+    }
     }
 
   itemSelected(item) {
