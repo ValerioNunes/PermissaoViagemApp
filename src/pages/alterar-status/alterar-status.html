@@ -52,12 +52,12 @@
             </ion-avatar>
           <div text-uppercase><h4>{{ status.Status.Nome }}</h4></div>
           <div text-uppercase><h4>{{ status.DataStatus | date:' dd/MM/yyyy - HH:mm'}}</h4></div>
-          <div text-wrap text-center class="observacao"> {{ status.Observacao }} </div>
+          <div *ngIf="status.Observacao != null" text-wrap text-center class="observacao"> {{ status.Observacao }} </div>
           
         </ion-item>
 
         <ion-list-header>Viajante(s)</ion-list-header>
-          <ion-item *ngFor="let viajante of item.ViajanteSolicitacaoId"> <div item-right><h4>{{ viajante.Empregado.Nome }}</h4></div></ion-item>
+          <ion-item *ngFor="let viajante of item.ViajanteSolicitacaoId"> <div ><h4>{{ viajante.Empregado.Nome }}</h4></div></ion-item>
         </ion-list>
 
         <div>
@@ -71,7 +71,7 @@
     
         <form (ngSubmit)="onSubmit($event)" #registerForm="ngForm">
           <ion-row>
-                  <ion-label><h4>Observação:</h4></ion-label>
+            <ion-label><h4>Observação:</h4></ion-label>
               <ion-item>
                   <ion-textarea placeholder="Digite a observação" [(ngModel)]="Observacao" name="obs"></ion-textarea>
                 </ion-item>

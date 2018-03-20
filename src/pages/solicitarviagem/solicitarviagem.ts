@@ -45,17 +45,14 @@ export class SolicitarviagemPage {
                 private loadingCtrl: LoadingController,
                 public msg         : MensagemProvider) {
 
-                  this.Aprovador   =  this.navParams.get("Aprovador");  
-                  this.Transportes =  this.navParams.get("Transporte");
-                  this.Place       =  this.navParams.get("Places");
+                this.Aprovador   =  this.navParams.get("Aprovador");  
+                this.Transportes =  this.navParams.get("Transporte");
+                this.Place       =  this.navParams.get("Places");
   }
 
   ionViewDidLoad() {
   }
 
-  gerarRelatorio(){
-    
-  } 
   onSubmit(formData) {
       if(this.formValidacao()) {
         this.showLoading();
@@ -108,17 +105,19 @@ export class SolicitarviagemPage {
             if(this.SolicitacaoViagem.Transporte !== '' ){
               if(this.SolicitacaoViagem.Partida !== '' ){
                 if(this.SolicitacaoViagem.Chegada !== '' ){
-                  if(this.Telefones.length > 0 ){
                         this.Viajantes.forEach(viajante =>  this.SolicitacaoViagem.Viajantes.push(viajante.Id) );
                         this.SolicitacaoViagem.Contatos = this.Telefones;
                         this.SolicitacaoViagem.Partida  = this.SolicitacaoViagem.Partida.toString().replace("Z","");
                         this.SolicitacaoViagem.Chegada  = this.SolicitacaoViagem.Chegada.toString().replace("Z","");
+                        if(this.SolicitacaoViagem.Observacao != null)
+                            this.SolicitacaoViagem.Observacao = this.navParams.get("Solicitante").Id+ ' : '+this.SolicitacaoViagem.Observacao;
+
+
                         this.Viajantes = []; 
                         this.Telefones = [];
+                        
                         return true;
-                  }else{
-                  this.showError("Digite o(s) Telefone(s)")
-                }
+                 
                 }else{
               
                 this.showError("Coloque a Data de Chegada")
@@ -266,7 +265,8 @@ export class SolicitarviagemPage {
                   Partida    : '',
                   Chegada    : '',
                   Contatos   : [],
-                  Viajantes  : []}
+                  Viajantes  : [],
+                  Observacao : null}
         }
 
     }

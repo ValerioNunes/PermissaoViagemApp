@@ -25,7 +25,7 @@ export class AlterarStatusPage {
   directionsDisplay: any;
 
 
-
+  User: any; 
   Solicitacao : any; 
   ListStatus: any;
   Status: any;
@@ -37,8 +37,8 @@ export class AlterarStatusPage {
   Origem: any;
   Destino: any;
 
-  Observacao: any;
-
+  Observacao = "";
+  StatusComOBS = [7,8]
   loading: Loading;
 
   constructor(public navCtrl: NavController,
@@ -50,6 +50,7 @@ export class AlterarStatusPage {
 
     this.Solicitacao =  this.navParams.get('Dados');
     this.ListStatus  =  this.navParams.get('Status');
+    this.User =  this.navParams.get('User');            
     this.NovoStatus.SolicitacaoViagemId = this.Solicitacao[0].Id;
     this.Solicitante = this.Solicitacao[0].Empregado;
     this.Aprovador   = this.Solicitacao[0].AprovadorSolicitacaoId[0].Aprovador.Empregado;
@@ -102,35 +103,58 @@ export class AlterarStatusPage {
       }
 
   onSubmit(event){
-    
+
     this.NovoStatus.StatusId =  this.Status;
-    this.NovoStatus.Observacao = this.Observacao;
+    var AnteriorStatus =  this.Solicitacao[0].AprovadorSolicitacaoId[0].Status.Id;
 
-    this.showLoading();
+    if((!(this.NovoStatus.StatusId  == 7) &&
+        !(AnteriorStatus  == 8) ) ||
+         this.Observacao.length > 3 ){
+          if(this.Observacao != "")
+              this.NovoStatus.Observacao = this.User.Id +" : "+ this.Observacao;
+                            this.showLoading();
+                            this.restProvider.setStatusSolicitacao(this.NovoStatus).then(allowed => {
+                              console.log(allowed);
 
-    this.restProvider.setStatusSolicitacao(this.NovoStatus).then(allowed => {
-      console.log(allowed);
+                              if(allowed == 'Sua solicitação foi cadastrada com sucesso!'){
+                            
+                                
+                                setTimeout(() => {
+                                  this.EnviarMensagem(this.Status);
+                                  }, 500);
 
-      if(allowed == 'Sua solicitação foi cadastrada com sucesso!'){
-    
-         
-         setTimeout(() => {
-          this.EnviarMensagem(this.Status);
-          }, 500);
 
+                              }else{
+                                this.showError("NÃO foi possível realizar alteração do Status!")
+                              }
+                            
+                                this.loading.dismiss();
+
+                              if(allowed == 'Sua solicitação foi cadastrada com sucesso!'){
+                                  this.showError("Status alterado com  SUCESSO!")  
+                                  this.navCtrl.pop();
+                              }
+
+                            }).catch(error => { console.log(error) });
 
       }else{
-        this.showError("NÃO foi possível realizar alteração do Status!")
-      }
-     
-        this.loading.dismiss();
+        switch(this.NovoStatus.StatusId) { 
+      
+          case 7: {   
+              this.showError("Informe o motivo do Cancelamento no Campo Observação");
+            break; 
+          }  
+        }
 
-      if(allowed == 'Sua solicitação foi cadastrada com sucesso!'){
-          this.showError("Status alterado com  SUCESSO!")  
-          this.navCtrl.pop();
-      }
+       switch(AnteriorStatus) { 
 
-    }).catch(error => { console.log(error) });
+          case 8: {   
+              this.showError("Informe o motivo do Desvio da Viagem no Campo Observação");
+          break; 
+          }  
+        }     
+        
+      }
     }
 
   EnviarMensagem(Status){
@@ -165,9 +189,9 @@ export class AlterarStatusPage {
    }
 
   private FormatStatus(){
-    return  { SolicitacaoViagemId     : '',
-              StatusId                : '',
-              Observacao              : ''}
+    return  { SolicitacaoViagemId     : 0,
+              StatusId                : 0,
+              Observacao              : null}
     }
   
   showLoading() {

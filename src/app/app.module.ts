@@ -4,7 +4,6 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
-//ionic cordova plugin rm cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="AIzaSyClD7IN8rDdCR0kR1KId6azmoZXAF8lOPw" --variable API_KEY_FOR_IOS="AIzaSyClD7IN8rDdCR0kR1KId6azmoZXAF8lOPw"
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -20,7 +19,6 @@ import { BrMaskerModule } from 'brmasker-ionic-3';
 import { HttpClientModule } from '@angular/common/http';
 import { RestProvider } from '../providers/rest/rest';
 import { MensagemProvider } from '../providers/msg/mensagem';
-import { EmailComposer } from '@ionic-native/email-composer';
 import { SMS } from '@ionic-native/sms';
 import { CallNumber } from '@ionic-native/call-number';
 
@@ -63,7 +61,6 @@ import { CallNumber } from '@ionic-native/call-number';
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     RestProvider,
-    EmailComposer,
     SMS,
     MensagemProvider,
     CallNumber

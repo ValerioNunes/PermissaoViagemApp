@@ -29,9 +29,9 @@ export class HomePage {
   private Aprovador: any;
   private Status: any;
 
-  status =  ['viajando','nao_aprovado','aprovado','espera','expirado'] 
-  StatusPrinc = ["aguardando","viajando","aprovado","nao_aprovado"]
-
+  //status =  ['viajando','nao_aprovado','aprovado','espera','expirado','cancelado','desvio_viagem','analisar_desvio'] 
+  //StatusPrinc = ["aguardando","viajando","aprovado","nao_aprovado",'cancelado','desvio_viagem','analisar_desvio']
+  StatusPrinc = ['encerrado','expirado'];
   constructor(public nav: NavController,
               public restProvider: RestProvider,
               public navParams: NavParams,
@@ -138,7 +138,7 @@ export class HomePage {
         
         this.TodasSolicitacoes = data;
 
-        var Solicitacao = this.TodasSolicitacoes.filter(s => this.StatusPrinc.findIndex(x => x === s.Status ) >= 0);
+        var Solicitacao = this.TodasSolicitacoes.filter(s => this.StatusPrinc.findIndex(x => x === s.Status ) < 0);
         this.setMinhasSolicitacoes(Solicitacao);
         this.resumoStatus();
       });
@@ -176,7 +176,7 @@ export class HomePage {
     this.restProvider.getSolicitacao(Id)
       .then(data => {
         this.loading.dismiss();
-        this.nav.push(AlterarStatusPage, { Dados: data, Status: status });
+        this.nav.push(AlterarStatusPage, { Dados: data, Status: status, User :  this.Solicitante });
       });
    }
  
@@ -194,12 +194,18 @@ export class HomePage {
       case "cancelado": {   
         this.buscarSolicitacaoAlterarStatus(item.Id,[this.Status[3]]);
         break; 
-      }    
+      } 
+      case "analisar_desvio": {   
+        this.buscarSolicitacaoAlterarStatus(item.Id,[this.Status[3]]);
+        break; 
+      }  
+   
       default:{
         this.buscarSolicitacaoAlterarStatus(item.Id, []);
        break; 
       }
     }
+
     }
   userSolicitante(item) {
 
@@ -217,6 +223,10 @@ export class HomePage {
             this.buscarSolicitacaoAlterarStatus(item.Id,   [this.Status[3]]); 
           break; 
           }
+          case "desvio_viagem": { 
+            this.buscarSolicitacaoAlterarStatus(item.Id,[this.Status[8]]); 
+          break;    
+          }
           case "encerrado": { 
             this.buscarSolicitacaoAlterarStatus(item.Id,[]); 
           break; 
@@ -231,11 +241,14 @@ export class HomePage {
           }
           case "cancelado": { 
             this.buscarSolicitacaoAlterarStatus(item.Id,[]); 
-          break; 
-          
-      } 
+          break;
+          }
+          default:{
+            this.buscarSolicitacaoAlterarStatus(item.Id, []);
+           break; 
+          }
     }
-    }
+  }
 
   itemSelected(item) {
 

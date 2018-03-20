@@ -1,4 +1,4 @@
-import { EmailComposer } from '@ionic-native/email-composer';
+
 import { Injectable } from '@angular/core';
 import { SMS } from '@ionic-native/sms';
 import { CallNumber } from '@ionic-native/call-number';
@@ -7,25 +7,11 @@ import { CallNumber } from '@ionic-native/call-number';
 @Injectable()
 export class MensagemProvider {
 
-constructor(private emailComposer: EmailComposer, 
+constructor( 
             private  sms: SMS,
             private callNumber: CallNumber) { }
 
-     
-public SendEmail(){
-    this.emailComposer.isAvailable().then( () => {
-        // the promise is resolving in this function, so sending is available
-        this.emailComposer.open( {
-            to: 'valerio_breno@hotmail.com',
-            subject: 'valerio_breno@hotmail.com',
-            body: 'App Ionic Teste',
-            isHtml: false
-        } );
-    }, () => {
-        // the promise is being rejected here, sending is not available
-        // do some sort of error code
-    } );
-    }
+
     
 public SendSMS(Mensagem){
 

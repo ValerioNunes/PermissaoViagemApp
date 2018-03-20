@@ -103,6 +103,11 @@
                         <ion-datetime  displayFormat="MM/DD/YYYY - HH:mm" [(ngModel)]="SolicitacaoViagem.Chegada" [ngModelOptions]="{standalone: true}" required></ion-datetime>
                     </ion-item>
 
+                    <ion-label><h4>Motivação da Viagem:</h4></ion-label>
+                    <ion-item>
+                        <ion-textarea placeholder="Digite a Motivação" [(ngModel)]="SolicitacaoViagem.Observacao" name="obs"></ion-textarea>
+                    </ion-item>
+
                     <ion-item>
                         <ion-label>Aprovador</ion-label>
                         <ion-select [(ngModel)]="SolicitacaoViagem.Aprovador" name="Aprovador" text-wrap required>
