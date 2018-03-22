@@ -21,7 +21,15 @@ export class RestProvider {
 
   //placeUrl = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=BuscaID&key=AIzaSyA_BxomwSlI5BuebULTjOtNvnXJv7qHILY';
   constructor(public http: HttpClient ) {
-    console.log('Hello RestProvider Provider');
+
+    new Promise(resolve => {
+      this.http.get(this.apiUrl + '/status').subscribe(data => {
+      
+      }, err => { 
+        this.apiUrl = 'http://172.20.15.22/permissaoviagem/api';
+        console.log(err);
+      });
+    });
 
   }
   getStatus() {

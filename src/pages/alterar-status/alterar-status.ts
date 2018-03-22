@@ -107,9 +107,8 @@ export class AlterarStatusPage {
     this.NovoStatus.StatusId =  this.Status;
     var AnteriorStatus =  this.Solicitacao[0].AprovadorSolicitacaoId[0].Status.Id;
 
-    if((!(this.NovoStatus.StatusId  == 7) &&
-        !(AnteriorStatus  == 8) ) ||
-         this.Observacao.length > 3 ){
+    if((!(this.NovoStatus.StatusId  == 7) && !(AnteriorStatus  == 8)) || this.Observacao.length > 3 ){
+
           if(this.Observacao != "")
               this.NovoStatus.Observacao = this.User.Id +" : "+ this.Observacao;
                             this.showLoading();

@@ -39,7 +39,7 @@
                 </ion-item>
 
 
-                <ion-list>
+                <ion-list *ngIf="Viajantes.length != 0">
                 <ion-label text-center >Lista de Viajantes</ion-label>
                     <ion-item-sliding *ngFor="let note of Viajantes">
             
@@ -69,7 +69,7 @@
             </ion-item>
 
 
-                <ion-list>
+                <ion-list *ngIf="Telefones.length != 0" >
                         <ion-label text-center >Lista de Telefones</ion-label>
                         <ion-item-sliding *ngFor="let note of Telefones">
                             <ion-item>
@@ -85,7 +85,7 @@
                 </ion-list>
             </div>
 
-            <form (ngSubmit)="onSubmit($event)" #registerForm="ngForm">
+            <form (ngSubmit)="onSubmit($event)" #registerForm="ngForm"  padding>
 
                     <ion-item> 
                         <ion-label>Transporte</ion-label>
@@ -93,16 +93,19 @@
                         <ion-option [value]="item.Id" *ngFor="let item of Transportes" >{{item.Nome}}</ion-option>
                         </ion-select>
                     </ion-item>
+                    
                     <ion-item>
                         <ion-label>Partida</ion-label>
-                        <ion-datetime displayFormat="MM/DD/YYYY - HH:mm"   [(ngModel)]="SolicitacaoViagem.Partida"  [ngModelOptions]="{standalone: true}" required></ion-datetime>
+                        <ion-datetime displayFormat="MM/DD/YYYY - HH:mm"   [(ngModel)]="SolicitacaoViagem.Partida"  [ngModelOptions]="{standalone: true}" (ngModelChange)='onChangeData()' required></ion-datetime>
                     </ion-item>
                     
                     <ion-item>
-                        <ion-label>Chegada Prevista</ion-label>
-                        <ion-datetime  displayFormat="MM/DD/YYYY - HH:mm" [(ngModel)]="SolicitacaoViagem.Chegada" [ngModelOptions]="{standalone: true}" required></ion-datetime>
+                        <ion-label>Chegada</ion-label>
+                        <ion-datetime  displayFormat="MM/DD/YYYY - HH:mm" [(ngModel)]="SolicitacaoViagem.Chegada" [ngModelOptions]="{standalone: true}" (ngModelChange)='onChangeData()' required></ion-datetime>
                     </ion-item>
-
+                    <ion-item *ngIf="duracao.length != 0" >
+                        <div item-right><h4>{{duracao}}</h4></div>
+                    </ion-item>
                     <ion-label><h4>Motivação da Viagem:</h4></ion-label>
                     <ion-item>
                         <ion-textarea placeholder="Digite a Motivação" [(ngModel)]="SolicitacaoViagem.Observacao" name="obs"></ion-textarea>

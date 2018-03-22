@@ -32,10 +32,10 @@ export class SolicitarviagemPage {
   private Telefones   :  any = [];
 
   loading: Loading;
-
+ 
   today = moment().format();
   SolicitacaoViagem  = this.FormatSolicitacao();
-
+  duracao = '';
  
 
   constructor(  public navCtrl: NavController,
@@ -45,7 +45,7 @@ export class SolicitarviagemPage {
                 private loadingCtrl: LoadingController,
                 public msg         : MensagemProvider) {
 
-                this.Aprovador   =  this.navParams.get("Aprovador");  
+                //this.Aprovador   =  this.navParams.get("Aprovador");  
                 this.Transportes =  this.navParams.get("Transporte");
                 this.Place       =  this.navParams.get("Places");
   }
@@ -105,6 +105,11 @@ export class SolicitarviagemPage {
             if(this.SolicitacaoViagem.Transporte !== '' ){
               if(this.SolicitacaoViagem.Partida !== '' ){
                 if(this.SolicitacaoViagem.Chegada !== '' ){
+                  let Partida = new Date(this.SolicitacaoViagem.Partida.replace("Z",""));
+                  let Chegada = new Date(this.SolicitacaoViagem.Chegada.replace("Z",""));
+                 
+                    if((Partida < Chegada)){
+
                         this.Viajantes.forEach(viajante =>  this.SolicitacaoViagem.Viajantes.push(viajante.Id) );
                         this.SolicitacaoViagem.Contatos = this.Telefones;
                         this.SolicitacaoViagem.Partida  = this.SolicitacaoViagem.Partida.toString().replace("Z","");
@@ -116,8 +121,12 @@ export class SolicitarviagemPage {
                         this.Viajantes = []; 
                         this.Telefones = [];
                         
-                        return true;
-                 
+                        return false;
+
+                      }else{
+              
+                        this.showError("Data de Partida maior que Data de Chegada")
+                      }
                 }else{
               
                 this.showError("Coloque a Data de Chegada")
@@ -269,5 +278,103 @@ export class SolicitarviagemPage {
                   Observacao : null}
         }
 
+  onChangeData(){
+    
+    let HoraInicioSup = 7;
+    let HoraFimSup = 18;
+
+    if((this.SolicitacaoViagem.Partida.length != 0) && (this.SolicitacaoViagem.Chegada.length != 0)){
+      
+      let Partida = new Date(this.SolicitacaoViagem.Partida.replace("Z",""));
+      let Chegada = new Date(this.SolicitacaoViagem.Chegada.replace("Z",""));
+
+      if(Partida < Chegada){
+
+          this.duracao = this.getSubDate(Partida, Chegada);
+          let HorasDeViagem = this.getHoras(Partida, Chegada);
+
+          if((Partida.getHours() >= HoraInicioSup) && (Partida.getHours() < HoraFimSup)){
+
+            if(((Partida.getHours() + Partida.getMinutes()/59) + HorasDeViagem ) <= 18){
+                        console.log("Supervisor");
+                        this.Aprovador   =   this.getAprovador("Supervisor");  
+            }else{
+                        console.log("Gerente");
+                        this.Aprovador   =   this.getAprovador("Manager");
+            }
+          }else{
+                        console.log("Gerente");
+                        this.Aprovador   =   this.getAprovador("Manager");
+          }
+        }
+            else{
+                this.duracao   = "Período Inválido..."
+                this.Aprovador =[]
+            }
+    
     }
+ 
+  }
+
+   getAprovador(Nivel){
+
+        var aprovador =   this.navParams.get("Aprovador").filter(x => x.NivelGerencial == Nivel); 
+
+        if(aprovador.length == 0){
+          return  this.navParams.get("Aprovador").filter(x => x.NivelGerencial == "Manager");
+        }
+
+        return  aprovador;
+   }
+
+   getSubDate(start, stop){
+
+    var msecPerMinute = 1000 * 60;  
+    var msecPerHour = msecPerMinute * 60;  
+    var msecPerDay = msecPerHour * 24;  
+
+    let interval =  stop.getTime()-start.getTime();
+
+    var days = Math.floor(interval / msecPerDay );  
+    interval = interval - (days * msecPerDay );  
+    
+    // Calculate the hours, minutes, and seconds.  
+    var hours = Math.floor(interval / msecPerHour );  
+    interval = interval - (hours * msecPerHour );  
+    
+    var minutes = Math.floor(interval / msecPerMinute );  
+    interval = interval - (minutes * msecPerMinute );  
+    
+    var seconds = Math.floor(interval / 1000 );  
+    
+    // Display the result.  
+    return String(days + " Dias, " + hours + " Horas  e " + minutes + " Minutos ");  
+    
+   }
+
+   getHoras(start, stop){
+
+    var msecPerMinute = 1000 * 60;  
+    var msecPerHour = msecPerMinute * 60;  
+    var msecPerDay = msecPerHour * 24;  
+
+    let interval =  stop.getTime()-start.getTime();
+
+    var days = Math.floor(interval / msecPerDay );  
+    interval = interval - (days * msecPerDay );  
+    
+    // Calculate the hours, minutes, and seconds.  
+    var hours = Math.floor(interval / msecPerHour );  
+    interval = interval - (hours * msecPerHour );  
+    
+    var minutes = Math.floor(interval / msecPerMinute );  
+    interval = interval - (minutes * msecPerMinute );  
+    
+    var seconds = Math.floor(interval / 1000 );  
+    
+    // Display the result.  
+    return (days*24  + hours + minutes/60 );  
+    
+   }
+}
 

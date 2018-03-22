@@ -30,7 +30,6 @@
                     </ion-item> 
             </button>
          </ion-list>
-
       </div>     
          
       
@@ -52,6 +51,9 @@
                       </ion-item>
                 </button> 
               </ion-list>
+
+              <div *ngIf="MinhasSolicitacoes.length == 0" text-wrap text-center ><h5> Nenhuma Solicitação de Viagem </h5></div>
+
             </div>    
     </ion-content>
 

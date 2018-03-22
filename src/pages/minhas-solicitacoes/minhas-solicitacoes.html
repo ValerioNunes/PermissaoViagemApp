@@ -18,12 +18,10 @@
           <ion-item>Matricula : {{ Solicitante.Id }}</ion-item>
           <ion-item>Telefone  : {{ Solicitante.Telefone }}</ion-item>
           <ion-item text-wrap>Email     : {{ Solicitante.Email }}</ion-item>
-          <ion-item text-wrap>Supervisão: {{ Solicitante.Supervisao }}</ion-item>
+          <ion-item  *ngIf="Solicitante.Supervisao.length != 0 " text-wrap>Supervisão: {{ Solicitante.Supervisao }}</ion-item>
+          <ion-item  *ngIf="Solicitante.Gerencia.length != 0 "text-wrap>Gerencia: {{ Solicitante.Gerencia }}</ion-item>
       </ion-list>
     </ion-item>
-
-
-
 
   <div>
           <button class="submit-btn" ion-button block (click)="alterarTelefone($event)">

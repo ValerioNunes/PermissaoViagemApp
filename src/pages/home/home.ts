@@ -140,9 +140,9 @@ export class HomePage {
 
         var Solicitacao = this.TodasSolicitacoes.filter(s => this.StatusPrinc.findIndex(x => x === s.Status ) < 0);
         this.setMinhasSolicitacoes(Solicitacao);
+        
         this.resumoStatus();
       });
-     
    }
   setMinhasSolicitacoes(TodasSolicitacoes){
     this.MinhasSolicitacoes = TodasSolicitacoes;

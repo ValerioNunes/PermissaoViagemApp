@@ -45,11 +45,13 @@
                
       </form>
     </div>  
-    <ion-item><div id="distancia"></div></ion-item>
-    <ion-item><div id="duracao"></div></ion-item>
+    <ion-item  *ngIf="addressDestino != null" ><div id="distancia"></div></ion-item>
+    <ion-item  *ngIf="addressDestino != null" ><div id="duracao"></div></ion-item>
 
-      <button class="submit-btn" ion-button full  (click)="nextSolicitacao()">
+    <div padding>
+      <button  class="submit-btn" ion-button full  (click)="nextSolicitacao()">
         Confirma
       </button>
+    </div>
   </ion-content>
 

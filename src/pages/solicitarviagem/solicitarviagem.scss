@@ -37,7 +37,7 @@
     
           #type-selector {
             color: #fff;
-            background-color: #4d90fe;
+            background-color: #ffc000;
             padding: 5px 11px 0px 11px;
           }
     
@@ -50,25 +50,26 @@
             width: 345px;
           }        
           ion-content {
-            background-color:rgb(21, 143, 62);
+            background-color:#007E7A;
           }     
           ion-item {
-            background-color:#007E7A;
-            color: #fff;
+            background-color:#ffc000;
+           
           }  
 
           ion-label{
-            color: #fff !important;
+            color: black !important;
           }
 
           ion-list{
-              background-color: #007E7A;
+              background-color:  #ffc000;
           }   
+
           .submit-btn {
-            background: rgb(218, 214, 31);
+            background: #ffc000;
             border-radius: 30px !important;
             border: 1px solid #ffffff;
-            color: rgb(21, 143, 62);
+            color: #007E7A;
           }      
       }
     }

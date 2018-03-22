@@ -101,7 +101,7 @@ export class DadosEmpregadoPage {
 
   showLoading() {
     this.loading = this.loadingCtrl.create({
-      content: 'Aguarde! Consultando Solicitações...',
+      content: 'Aguarde! Salvando Dados...',
       dismissOnPageChange: true
     });
     this.loading.present();
