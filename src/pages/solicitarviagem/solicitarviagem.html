@@ -96,12 +96,12 @@
                     
                     <ion-item>
                         <ion-label>Partida</ion-label>
-                        <ion-datetime displayFormat="MM/DD/YYYY - HH:mm"   [(ngModel)]="SolicitacaoViagem.Partida"  [ngModelOptions]="{standalone: true}" (ngModelChange)='onChangeData()' required></ion-datetime>
+                        <ion-datetime displayFormat="DD/MM/YYYY - HH:mm"   [(ngModel)]="SolicitacaoViagem.Partida"  [ngModelOptions]="{standalone: true}" (ngModelChange)='onChangeData()' required></ion-datetime>
                     </ion-item>
                     
                     <ion-item>
                         <ion-label>Chegada</ion-label>
-                        <ion-datetime  displayFormat="MM/DD/YYYY - HH:mm" [(ngModel)]="SolicitacaoViagem.Chegada" [ngModelOptions]="{standalone: true}" (ngModelChange)='onChangeData()' required></ion-datetime>
+                        <ion-datetime  displayFormat="DD/MM/YYYY - HH:mm" [(ngModel)]="SolicitacaoViagem.Chegada" [ngModelOptions]="{standalone: true}" (ngModelChange)='onChangeData()' required></ion-datetime>
                     </ion-item>
                     <ion-item *ngIf="duracao.length != 0" >
                         <div item-right><h4>{{duracao}}</h4></div>

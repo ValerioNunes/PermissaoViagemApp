@@ -29,7 +29,9 @@ export class LoginPage {
     this.showLoading()
     this.restProvider.getDadosSolicitarViagem(this.registerCredentials).then(allowed => {
       if (allowed !== false) {
-        this.nav.setRoot(TabsPage, allowed);
+       
+        this.nav.setRoot(TabsPage, allowed); 
+
       } else {
         this.showError("Matricula Inválida!")
       }

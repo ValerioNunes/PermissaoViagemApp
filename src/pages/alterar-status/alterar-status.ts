@@ -180,7 +180,7 @@ export class AlterarStatusPage {
 
   EnviarSMS(Empregado, StatusNome ){
    let Mensagem = { Telefone : Empregado.Telefone,
-                   Texto   : "Permissao Viagem - "+
+                   Texto   : "CCR-Online - "+
                               "Viagem - SV : "+this.Solicitacao[0].Id+" De: " +this.Solicitacao[0].Origem.Nome
                               +" Para: " +this.Solicitacao[0].Destino.Nome +" <"+ StatusNome+">"
       };

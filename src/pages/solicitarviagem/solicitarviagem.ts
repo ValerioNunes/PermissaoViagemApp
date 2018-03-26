@@ -89,7 +89,7 @@ export class SolicitarviagemPage {
 
     if(element.Telefone != null){
         let Mensagem = { Telefone : element.Telefone,
-                        Texto     : "Permissão Viagem - +1 Solicitação AGUARDADO Análise" 
+                        Texto     : "CCR-Online - +1 Solicitação AGUARDADO Análise" 
                         };
         this.msg.SendSMS(Mensagem);
                   }
@@ -121,7 +121,7 @@ export class SolicitarviagemPage {
                         this.Viajantes = []; 
                         this.Telefones = [];
                         
-                        return false;
+                        return true;
 
                       }else{
               

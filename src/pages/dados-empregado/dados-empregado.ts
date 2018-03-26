@@ -69,7 +69,7 @@ export class DadosEmpregadoPage {
       this.showError("Cadastrado com SUCESSO");
       
       let Mensagem = { Telefone : Empregado.Telefone,
-                       Texto    : "Permissao Viagem - Número Atualizado com Sucesso" 
+                       Texto    : "CCR-Online - Número Atualizado com Sucesso" 
                       };
       
       setTimeout(() => {

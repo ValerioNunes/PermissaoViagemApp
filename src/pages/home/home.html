@@ -1,59 +1,78 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Permissão de Viagem 
+      CCR-Online
     </ion-title>
     <ion-buttons end>
-        <button ion-button icon-only (click)="getMinhasSolicitacoes()"><ion-icon name="md-refresh"></ion-icon></button>
+      <button ion-button icon-only (click)="getMinhasSolicitacoes()">
+        <ion-icon name="md-refresh"></ion-icon>
+      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-    <ion-content padding-top>
+<ion-content padding-top>
 
-    <div>
-      <ion-item>
-        <ion-label><div text-wrap>Oi, {{Solicitante.Nome}}</div></ion-label>
-      </ion-item>
+  <div>
+    <ion-item>
+      <ion-label>
+        <div text-wrap>Oi, {{Solicitante.Nome}}</div>
+      </ion-label>
+    </ion-item>
+  </div>
+
+  <div #map id="map"></div>
+
+  <div padding>
+    <ion-list>
+      <button ion-item *ngFor="let item of Relatorio" (click)="gerarTrafego(item)" #slidingItem>
+        <ion-item>
+          <ion-avatar item-start>
+            <img src="assets/imgs/{{item.Status}}.png">
+          </ion-avatar>
+          <div text-wrap text-uppercase>{{item.Status}} : {{item.Quantidade}} </div>
+        </ion-item>
+      </button>
+    </ion-list>
+  </div>
+
+
+  <ion-item>
+    <ion-label text-wrap text-center class="testclass">Minhas Solicitações de Viagem  </ion-label>
+  </ion-item>
+  <div>
+    <ion-list>
+      <button ion-item *ngFor="let note of MinhasSolicitacoes" (click)="itemSelected(note)" #slidingItem>
+        <ion-item>
+          <ion-avatar item-start>
+            <img src="assets/imgs/{{note.Status}}.png">
+          </ion-avatar>
+
+          <div padding text-uppercase text-center>
+            <h4>{{note.Status}}</h4>
+          </div>
+          <div text-wrap>
+            <h4>Origem : {{note.Origem}}</h4>
+          </div>
+          <div text-wrap>
+            <h4>Destino: {{note.Destino}}</h4>
+          </div>
+          <div item-right>
+            <h4>SV: {{note.Id}}</h4>
+          </div>
+          <div text-wrap>
+            <h4>Partida: {{note.Partida | date:' dd/MM/yyyy - HH:mm'}}</h4>
+          </div>
+          <div *ngIf="note.Status === 'viajando' " text-wrap>
+            <h5>{{ this.getTempoQueFalta(note.Chegada) }} </h5>
+          </div>
+        </ion-item>
+      </button>
+    </ion-list>
+
+    <div *ngIf="MinhasSolicitacoes.length == 0" text-wrap text-center>
+      <h5> Nenhuma Solicitação de Viagem </h5>
     </div>
 
-    <div #map id="map"></div>
-
-      <div padding>
-        <ion-list>
-            <button ion-item  *ngFor="let item of Relatorio" (click)="gerarTrafego(item)" #slidingItem>
-                    <ion-item  >   
-                            <ion-avatar item-start>
-                                <img src="assets/imgs/{{item.Status}}.png">
-                            </ion-avatar>
-                            <div  text-wrap text-uppercase>{{item.Status}} : {{item.Quantidade}} </div>
-                    </ion-item> 
-            </button>
-         </ion-list>
-      </div>     
-         
-      
-            <ion-item>
-             <ion-label text-wrap text-center class="testclass" >Minhas Solicitações de Viagem</ion-label>
-            </ion-item>
-        <div>
-          <ion-list>
-                <button ion-item *ngFor="let note of MinhasSolicitacoes" (click)="itemSelected(note)" #slidingItem>      
-                      <ion-item>   
-                              <ion-avatar item-start>
-                                  <img src="assets/imgs/{{note.Status}}.png">
-                              </ion-avatar>
-
-                            <div  padding text-uppercase text-center><h4>{{note.Status}}</h4></div>   
-                            <div text-wrap><h4>Origem : {{note.Origem}}</h4></div>   
-                            <div text-wrap><h4>Destino: {{note.Destino}}</h4></div>  <div item-right><h4>SV: {{note.Id}}</h4></div>
-                            <div text-wrap><h4>Partida: {{note.Partida | date:' dd/MM/yyyy - HH:mm'}}</h4></div>
-                      </ion-item>
-                </button> 
-              </ion-list>
-
-              <div *ngIf="MinhasSolicitacoes.length == 0" text-wrap text-center ><h5> Nenhuma Solicitação de Viagem </h5></div>
-
-            </div>    
-    </ion-content>
-
+  </div>
+</ion-content>
