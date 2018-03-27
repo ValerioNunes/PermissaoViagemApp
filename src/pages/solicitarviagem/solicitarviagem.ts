@@ -50,9 +50,8 @@ export class SolicitarviagemPage {
                 this.Place       =  this.navParams.get("Places");
   }
 
-  ionViewDidLoad() {
+ ionViewDidLoad() {
   }
-
   onSubmit(formData) {
       if(this.formValidacao()) {
         this.showLoading();
@@ -296,14 +295,14 @@ export class SolicitarviagemPage {
           if((Partida.getHours() >= HoraInicioSup) && (Partida.getHours() < HoraFimSup)){
 
             if(((Partida.getHours() + Partida.getMinutes()/59) + HorasDeViagem ) <= 18){
-                        console.log("Supervisor");
+                        //console.log("Supervisor");
                         this.Aprovador   =   this.getAprovador("Supervisor");  
             }else{
-                        console.log("Gerente");
+                        //console.log("Gerente");
                         this.Aprovador   =   this.getAprovador("Manager");
             }
           }else{
-                        console.log("Gerente");
+                        //console.log("Gerente");
                         this.Aprovador   =   this.getAprovador("Manager");
           }
         }
@@ -314,9 +313,9 @@ export class SolicitarviagemPage {
     
     }
  
-  }
+   }
 
-   getAprovador(Nivel){
+  getAprovador(Nivel){
 
         var aprovador =   this.navParams.get("Aprovador").filter(x => x.NivelGerencial == Nivel); 
 
@@ -327,7 +326,7 @@ export class SolicitarviagemPage {
         return  aprovador;
    }
 
-   getSubDate(start, stop){
+  getSubDate(start, stop){
 
     var msecPerMinute = 1000 * 60;  
     var msecPerHour = msecPerMinute * 60;  
@@ -352,16 +351,16 @@ export class SolicitarviagemPage {
     
    }
 
-   getHoras(start, stop){
+  getHoras(start, stop){
 
     var msecPerMinute = 1000 * 60;  
     var msecPerHour = msecPerMinute * 60;  
     var msecPerDay = msecPerHour * 24;  
 
-    let interval =  stop.getTime()-start.getTime();
+    let interval =  stop.getTime() - start.getTime();
 
-    var days = Math.floor(interval / msecPerDay );  
-    interval = interval - (days * msecPerDay );  
+    var days = Math.floor(interval/msecPerDay);  
+    interval = interval - (days*msecPerDay);  
     
     // Calculate the hours, minutes, and seconds.  
     var hours = Math.floor(interval / msecPerHour );  
