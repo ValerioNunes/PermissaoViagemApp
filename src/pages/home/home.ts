@@ -29,9 +29,8 @@ export class HomePage {
   private Aprovador: any;
   private Status: any;
 
-  //status =  ['viajando','nao_aprovado','aprovado','espera','expirado','cancelado','desvio_viagem','analisar_desvio'] 
-  //StatusPrinc = ["aguardando","viajando","aprovado","nao_aprovado",'cancelado','desvio_viagem','analisar_desvio']
   StatusPrinc = ['encerrado', 'expirado'];
+
   constructor(public nav: NavController,
     public restProvider: RestProvider,
     public navParams: NavParams,
@@ -87,9 +86,7 @@ export class HomePage {
   gerarTrafego(Status) {
 
     let Solicitacao = this.TodasSolicitacoes.filter(s => s.Status === Status.Status);
-    
 
-   
     this.clearMap();
     this.directionsDisplay = new Array();
     let i = 0;
@@ -107,7 +104,7 @@ export class HomePage {
         origin: { 'placeId': element.IdOrigemPlace },//new google.maps.LatLng(this.Origem.lat, this.Origem.lng),
         destination: { 'placeId': element.IdDestinoPlace },//new google.maps.LatLng(this.Destino.lat, this.Destino.lng),
         travelMode: google.maps.TravelMode.DRIVING,
-      }
+      }   
       let display = this.directionsDisplay[i];
       directionsService.route(request, (result, status) => {
         if (status == google.maps.DirectionsStatus.OK) {

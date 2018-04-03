@@ -234,23 +234,20 @@ export class SolicitarviagemPage {
     }
 
   showLoading() {
-
-    this.loading = this.loadingCtrl.create({
-    content: 'Aguarde! Verificando Matricula...',
-    dismissOnPageChange: true
-    });
-    this.loading.present();
+        this.loading = this.loadingCtrl.create({
+        content: 'Aguarde! Verificando Matricula...',
+        dismissOnPageChange: true
+        });
+        this.loading.present();
 
      }
 
   
   onRemoveItem(item){
-
     let index = this.Viajantes.indexOf(item);
     if(index > -1){
         this.Viajantes.splice(index, 1);
           }
-
     }
 
   showError(text) {
@@ -260,8 +257,8 @@ export class SolicitarviagemPage {
         buttons: ['OK']
       });
       alert.present();
-
     }
+    
   private FormatSolicitacao (){
         return  { Origem     : this.navParams.get("Places").origem,
                   Destino    : this.navParams.get("Places").destino,
